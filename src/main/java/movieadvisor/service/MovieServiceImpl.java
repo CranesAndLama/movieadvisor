@@ -1,0 +1,324 @@
+package movieadvisor.service;
+
+import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.TmdbMovies;
+import info.movito.themoviedbapi.model.MovieDb;
+import info.movito.themoviedbapi.model.core.ResultsPage;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import movieadvisor.model.Movie;
+import movieadvisor.model.User;
+import movieadvisor.recommender.RecommenderEngine;
+import movieadvisor.repository.MovieRepository;
+//import movieadvisor.repository.WatchlistRepository;
+
+
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service("movieService")
+public class MovieServiceImpl implements MovieService{
+	
+	@Autowired
+	MovieRepository movieRepository;
+	/*@Autowired
+	WatchlistRepository watchlistRepository;*/
+	
+	public static final String API_KEY = "50906e9eb1f85e11a1ddf27e01bd8723";
+	TmdbApi tmdbApi = new TmdbApi(API_KEY); 
+	
+	public Movie getMovie(int movieId) {
+		TmdbMovies movies = tmdbApi.getMovies();
+		MovieDb moviedb = movies.getMovie(movieId, "en");
+		Movie movie = new Movie(moviedb);
+		return movie;
+	}
+	private void setMovieDb(Movie movie) {
+		TmdbMovies movies = tmdbApi.getMovies();
+		int i = movie.getMovieId().intValue();
+		MovieDb movieDb = movies.getMovie(i, "en");
+		movie.setMovieDb(movieDb);
+	}
+	public Movie getMovieFromDb(Long movieId, Long userId) {
+		Movie movieDb = movieRepository.getMovie(movieId, userId);
+		if (movieDb != null) {
+			setMovieDb(movieDb);
+			return movieDb;
+		}
+		else {
+			Movie movie = new Movie();
+			
+			movie.setMovieId(movieId);
+			setMovieDb(movie);
+			return movie;
+		}
+	}
+	
+/*	public Movie formMovieObject(int movieId, Long userId) {
+		TmdbMovies movies = tmdbApi.getMovies();
+		MovieDb movieDb = movies.getMovie(movieId, "en");
+		//Movie movie = new Movie(movieDb);
+		// if movie has been rated
+		Movie movie = movieRepository.getMovie(movieId, userId);
+		if (movie != null) {
+			movie.setMovieDb(movieDb);
+			
+		}
+		else {
+			movie = new Movie(movieDb);
+		}
+		// if movie is in the watchlist
+		List<Integer> watchlist = watchlistRepository.getUserWatchlist(userId);
+		if (watchlist.contains(movieId)) {
+			movie.setIsInWatchlist(true);
+		}
+		else {
+			movie.setIsInWatchlist(false);
+		}
+		return movie;
+	}*/
+/*	public List<Movie> formMovies(List<RecentlyViewedMovie> recentlyViewed) {
+		List<Movie> movies = new ArrayList<Movie>(); 
+		for (RecentlyViewedMovie recentlyViewedMovie: recentlyViewed) {
+			int movieId = recentlyViewedMovie.getMovieId();
+			
+			System.out.println(movieId);
+			
+			Long userId = recentlyViewedMovie.getUser().getUserId();
+			
+			System.out.println(userId);
+			
+			Movie movie = formMovieObject(movieId, userId);
+			movies.add(movie);
+		}
+		return movies;
+	}
+	*/
+	
+	public List<Movie> getTopRated() {
+		TmdbMovies movies = tmdbApi.getMovies();
+		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", 0);
+		
+		/*int count = 1;
+		for (moviesResults.getTotalPages()) {
+			
+		}*/
+		int pages = moviesResults.getTotalPages();
+		System.out.println("Top rated Total Pages: " + pages);
+		int totalResults = moviesResults.getTotalResults();
+		System.out.println("Top rated Total Results: " + totalResults);
+		
+		List<MovieDb> resultList = moviesResults.getResults();
+		List<Movie> moviesList = convertToMovieList(resultList);
+		return moviesList;
+	}
+	private List<Movie> convertToMovieList(List<MovieDb> moviDbList) {
+		List<Movie> movies = new ArrayList<Movie>();
+		for (MovieDb movieDb: moviDbList) {
+			Movie movie = new Movie(movieDb);
+			movies.add(movie);
+		}
+		return movies;
+	}
+	
+	public List<Movie> getTopRatedFromDb(User user) {
+		List<Movie> resultMovieList = new ArrayList<Movie>();
+		TmdbMovies movies = tmdbApi.getMovies();
+		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", 0);
+		List<MovieDb> resultList = moviesResults.getResults();
+		resultList.sort(null);
+		List<Movie> userMovies = movieRepository.getAllUserMovies(user.getUserId());
+		userMovies.sort(null);
+		//for movie
+		int i = 0;
+		//for movieDb
+		int j = 0;
+		boolean notStop = true;
+		boolean endOfUserMovies = false;
+		
+		while(notStop) {
+			if (endOfUserMovies || userMovies.size() == 0) {
+				MovieDb movieDb = resultList.get(j);
+				++j;
+				if (resultList.size() == j) 
+					notStop = false;
+					
+				Movie movie = new Movie(movieDb);
+				resultMovieList.add(movie);
+			}
+			else {
+			Movie movie = userMovies.get(i);
+			MovieDb movieDb = resultList.get(j);
+			
+			if (movieDb.getId() > movie.getMovieId()) {
+				++i;
+				if (userMovies.size() == i) {
+					endOfUserMovies = true;
+				}
+			}
+			else if (movieDb.getId() < movie.getMovieId()) {
+				++j;
+				if (resultList.size() == j) 
+					notStop = false;
+					
+				movie = new Movie(movieDb);
+				resultMovieList.add(movie);
+			}
+			else {
+				movie.setMovieDb(movieDb);
+				resultMovieList.add(movie);
+				++i;
+				++j;
+				if (resultList.size() == j) 
+					notStop = false;
+				
+				if (userMovies.size() == i) {
+					endOfUserMovies = true;
+				}
+			}
+			}
+		}
+		return resultMovieList;	
+			/*
+			Integer i = movieDb.getId();
+			
+			//if (userMovies.contains(movieDb))
+			//Movie movie = getMovieFromDb(i.longValue(), user.getUserId());
+			if (movie != null) {
+				movie.setMovieDb(movieDb);
+			}
+			else {
+				movie = new Movie(movieDb);
+			}
+			resultMovieList.add(movie);
+		}
+		*/
+		//return resultMovieList;
+	}
+	
+	
+	
+	@Transactional
+	public void rateMovie(User user, Long movieId, Byte rating) {
+		Movie movieDb = movieRepository.getMovie(movieId, user.getUserId());
+		if (movieDb != null) {
+			movieDb.setRating(rating);
+			movieRepository.updateMovie(movieDb);
+		}
+		else {
+			//Movie movie = formMovieObject(movieId, user.getUserId());
+			Movie movie = new Movie();
+			
+			movie.setMovieId(movieId);
+			movie.setUser(user);
+			movie.setRating(rating);
+			movieRepository.saveMovie(movie);
+		}
+	}
+	
+	private static Random rand = new Random();
+	
+	@Transactional
+	public void setRatings(User user) {
+		
+		for (int i = 0; i < 50; i++) {
+			Integer randInt = (Integer)rand.nextInt(20);
+			
+			Long longMovieId = 200l + randInt.longValue();
+			Byte rating = (byte) rand.nextInt(10);
+			rateMovie(user, longMovieId, rating);
+		}
+	}
+	
+	
+	@Transactional
+	public void addMovieToRecentViewed(Long movieId, User user) {
+		Movie movieDb = movieRepository.getMovie(movieId, user.getUserId());
+		if (movieDb != null) {
+			//movieRepository.deleteMovie(movieDb);
+			movieDb.setIsRecentlyViewed(true);
+			movieRepository.updateMovie(movieDb);
+		}
+		else {
+			//Movie movie = formMovieObject(movieId, user.getUserId());
+			Movie movie = new Movie();
+			movie.setIsRecentlyViewed(true);
+			movie.setMovieId(movieId);
+			movie.setUser(user);
+			movieRepository.saveMovie(movie);
+		}
+	}
+	
+	@Transactional
+	public void addMovieToWatchlist(User user, Long movieId) {
+		Movie movieDb = movieRepository.getMovie(movieId, user.getUserId());
+		if (movieDb != null) {
+			movieDb.setIsInWatchlist(true);
+			movieRepository.updateMovie(movieDb);
+		}
+		else {
+			//Movie movie = formMovieObject(movieId, user.getUserId());
+			Movie movie = new Movie();
+			movie.setIsInWatchlist(true);
+			movie.setMovieId(movieId);
+			movie.setUser(user);
+			movieRepository.saveMovie(movie);
+		}
+		
+	}
+	@Transactional
+	public void removeMovieFromWatchlist(User user, Long movieId) {
+		Movie movieDb = movieRepository.getMovie(movieId, user.getUserId());
+			movieDb.setIsInWatchlist(false);
+			movieRepository.updateMovie(movieDb);
+	}
+	
+	public List<Movie> getUserWatchlist(Long userId) {
+		List<Movie> movies= movieRepository.getUserWatchlist(userId);
+		for (Movie movie: movies) {
+			
+			setMovieDb(movie);
+			System.out.println("Watchlist movie: " + movie.getMovieDb().getTitle());
+		}
+		return movies;	
+	}
+	public List<Movie> getRecentlyViewed(User user) {
+		List<Movie> movies= movieRepository.getRecentlyViewed(user.getUserId());
+		for (Movie movie: movies) {
+			setMovieDb(movie);
+		}
+		return movies;
+	}
+	public List<Movie> getRecommendations(Long userId) throws TasteException {
+		List<Movie> resultList = new ArrayList<Movie>();
+		List<RecommendedItem> recommendations = RecommenderEngine.makeRecommendations(userId);
+		
+		for (RecommendedItem recommendedItem : recommendations) {
+			System.out.println(recommendedItem);
+			Long movieId = recommendedItem.getItemID();
+			Movie movie = getMovieFromDb(movieId, userId);
+			resultList.add(movie);
+		}			
+		return resultList;
+	}
+	
+	
+
+	
+
+	/*	public static void main(String[] args) {
+	TmdbApi tmdbApi = new TmdbApi(API_KEY);
+	TmdbMovies movies = new TmdbApi(API_KEY).getMovies();
+    
+    MovieDb movie = movies.getMovie(550, "en");
+    System.out.println(movie.getTitle());
+    TmdbConfiguration configuration = tmdbApi.getConfiguration();
+
+}*/
+}
