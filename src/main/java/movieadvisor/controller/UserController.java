@@ -44,8 +44,8 @@ public class UserController {
 		return "loginForm";
 	}
 	@RequestMapping(value = "user/login", method = RequestMethod.POST)
-	public String loginUser(@ModelAttribute("user") User user, Model model, HttpSession session) {
-		User loginUser = userService.validateUserLogin(user);
+	public String loginUser(@ModelAttribute("newUser") User newUser, Model model, HttpSession session) {
+		User loginUser = userService.validateUserLogin(newUser);
 		
 		if (loginUser != null) {
 			System.out.println("User login successfully");

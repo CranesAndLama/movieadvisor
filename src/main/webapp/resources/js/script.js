@@ -88,7 +88,7 @@ var Page = {
 
     },
     closeSearch: function (a) {
-        jQuery('body.open_search').live('click', function (e) {
+        jQuery('body.open_search').click(function (e) {
             if (!jQuery(e.target).parents().hasClass('search_wrap')) {
                 jQuery('.search_inp').removeClass('open_search');
                 jQuery('.search_icon').removeClass('open_search');
@@ -145,13 +145,13 @@ jQuery(document).ready(function () {
     jQuery('.icon-close').click(function () {
         Page.closeForm('.morph-button');
     });
-    jQuery('.form_content').live('click', function (e) {
+   
+    jQuery('.form_content').click(function (e) {
         if (!jQuery(e.target).parents().hasClass('morph-content')) {
             Page.closeForm('.morph-button');
         }
-        return false;
-    });
 
+    });
     Page.searchInput();
     Page.closeSearch();
     Page.columns();

@@ -39,6 +39,7 @@ public class UserRepositoryImpl implements UserRepository{
 		TypedQuery<User> query = em.createNamedQuery(User.GET_USER_BY_EMAIL, User.class);
 		query.setParameter("email", email);
 		List<User> users = query.getResultList();
+		if (users.size() == 0) return null;
 		User user = users.get(0);
 		System.out.println(user.getEmail() + "  " + user.getPassword());
 		return user;

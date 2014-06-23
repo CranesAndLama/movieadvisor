@@ -21,36 +21,21 @@
                     </form>
                      -->
 		            <sf:form method="POST" modelAttribute="newUser" action="/movieadvisor/user/signup">
-					<fieldset>
-					<table>
-						<tr>
-							<th><label for="user_screen_name">Username:</label></th>
-							<td><sf:input path="username" size="15" maxlength="15" id="user_screen_name"/>			
-								<small id="username_msg">No spaces,please.</small><br>
-								<sf:errors path="username" cssClass="error"/>
-							</td>
-						</tr>
-						<tr>
-							<th><label for="user_email">Email Address:</label></th>
-							<td><sf:input path="email" size="30" id="user_email"/>						
-								<sf:errors path="email" cssClass="error"/>
-							</td>
-						</tr>
-						<tr>
-						<tr>
-							<th><label for="user_password">Password:</label></th>
-							<td><sf:password path="password" size="30" showPassword="true" id="user_password"/>
-								<small>6 characters or more(be tricky!)</small><br>
-								<sf:errors path="password" cssClass="error"/>
-							</td>
+						<label for="user_screen_name">Username:</label>
+						<sf:input path="username" size="15" maxlength="15" id="user_screen_name"/>			
+						<small id="username_msg">No spaces,please.</small><br>
+						<sf:errors path="username" cssClass="error"/>
 						
-							<th></th>
-							<td>
-								<input name="commit" type="submit" value="Create my account."/>
-							</td>
-						</tr>
-					</table>
-					</fieldset>
+						<label for="user_email">Email Address:</label>
+						<sf:input path="email" size="30" id="user_email"/>						
+						<sf:errors path="email" cssClass="error"/>
+						
+						<label for="user_password">Password:</label>
+						<sf:password path="password" size="30" showPassword="true" id="user_password"/>
+						<small>6 characters or more(be tricky!)</small><br>
+						<sf:errors path="password" cssClass="error"/>
+						
+						<input name="commit" type="submit" value="Create my account."/>
 				</sf:form>
                     <div class="soc_login">
                         <h3>SignUp Socials</h3>
