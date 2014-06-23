@@ -1,6 +1,5 @@
 package movieadvisor.recommender;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -14,8 +13,6 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 

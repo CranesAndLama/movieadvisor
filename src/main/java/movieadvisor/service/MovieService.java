@@ -13,7 +13,7 @@ public interface MovieService {
 	
 	Movie getMovieFromDb(Long movieId, Long userId);
 	
-	List<Movie> getTopRated();
+	List<Movie> getTopRated(Integer page);
 
 	void rateMovie(User user, Long movie, Byte rating);
 
@@ -36,6 +36,8 @@ public interface MovieService {
 	void setRatings(User user);
 
 	List<Movie> getRecommendations(Long userId) throws TasteException;
+
+	List<Movie> getNewMovies();
 
 	
 }

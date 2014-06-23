@@ -9,11 +9,11 @@ import movieadvisor.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -38,25 +38,28 @@ public class MovieController {
 			movie = movieService.getMovie(i);
 		}
 		model.addAttribute("movie", movie);
-		model.addAttribute("loginUser", loginUser);
+		//model.addAttribute("loginUser", loginUser);
 		return "viewMovie";
 	}
+
 	@RequestMapping(value = "/ratemovie/{movieId}", method = RequestMethod.POST)
-	public String rateMovie(final @PathVariable Long movieId, @ModelAttribute("ratedMovie") Movie ratedMovie, BindingResult bindingResult, HttpSession session) {
+	public @ResponseBody String rateMovie(final @PathVariable Long movieId, @RequestParam(value="rating", required=true) Byte rating, HttpSession session) {
 		//Byte ratingByte = Byte.parseByte(rating);
-		System.out.println(ratedMovie.getRating());
-		//Integer movie = Integer.parseInt(movieId);
+		System.out.println("RATE MOVIE CONTROLLER");
+		System.out.println(rating);
+		
 		User loginUser = (User)session.getAttribute("loginUser");
 		
-		System.out.println(movieId);
+		//System.out.println(movieId);
 		System.out.println(loginUser.getUsername());
 		
-		movieService.rateMovie(loginUser, movieId, ratedMovie.getRating());
-		return "redirect:/main";
+		movieService.rateMovie(loginUser, movieId, rating);
+		return rating.toString();
 	}
 	
+	
 	@RequestMapping(value = "addtowatchlist/{movieId}",method = RequestMethod.GET)
-	public String addToWatchlist(Model model, final @PathVariable Long movieId, HttpSession session) {
+	public @ResponseBody String addToWatchlist(final @PathVariable Long movieId, HttpSession session) {
 		
 		System.out.println(movieId);
 		//int movieIntId = Integer.parseInt(movieId);
@@ -66,10 +69,11 @@ public class MovieController {
 		
 		movieService.addMovieToWatchlist(user, movieId);
 		
-		return "redirect:/main";
+		return "true";
 	}
+	
 	@RequestMapping(value = "removefromwatchlist/{movieId}",method = RequestMethod.GET)
-	public String removefromwatchlist(Model model, final @PathVariable Long movieId, HttpSession session) {
+	public @ResponseBody String removefromwatchlist(final @PathVariable Long movieId, HttpSession session) {
 		
 		System.out.println(movieId);
 		//int movieIntId = Integer.parseInt(movieId);
@@ -79,12 +83,11 @@ public class MovieController {
 		
 		movieService.removeMovieFromWatchlist(user, movieId);
 		
-		return "redirect:/main";
+		return "false";
 	}
 	
-	
-	@RequestMapping(value = "rate",method = RequestMethod.GET)
-	public String removeScript(Model model, HttpSession session) {
+/*	@RequestMapping(value = "rate",method = RequestMethod.GET)
+	public String removeScript(HttpSession session) {
 		
 		User user = (User) session.getAttribute("loginUser");
 		System.out.println(user.getUsername());
@@ -92,6 +95,6 @@ public class MovieController {
 		movieService.setRatings(user);
 		
 		return "redirect:/main";
-	}
+	}*/
 	
 }

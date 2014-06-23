@@ -5,7 +5,10 @@ import info.movito.themoviedbapi.TmdbMovies;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.ResultsPage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +17,6 @@ import movieadvisor.model.User;
 import movieadvisor.recommender.RecommenderEngine;
 import movieadvisor.repository.MovieRepository;
 //import movieadvisor.repository.WatchlistRepository;
-
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
@@ -101,9 +103,9 @@ public class MovieServiceImpl implements MovieService{
 	}
 	*/
 	
-	public List<Movie> getTopRated() {
+	public List<Movie> getTopRated(Integer page) {
 		TmdbMovies movies = tmdbApi.getMovies();
-		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", 0);
+		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", page);
 		
 		/*int count = 1;
 		for (moviesResults.getTotalPages()) {
@@ -216,6 +218,8 @@ public class MovieServiceImpl implements MovieService{
 			Movie movie = new Movie();
 			
 			movie.setMovieId(movieId);
+			
+			movie.setUserId(user.getUserId());
 			movie.setUser(user);
 			movie.setRating(rating);
 			movieRepository.saveMovie(movie);
@@ -240,15 +244,20 @@ public class MovieServiceImpl implements MovieService{
 	@Transactional
 	public void addMovieToRecentViewed(Long movieId, User user) {
 		Movie movieDb = movieRepository.getMovie(movieId, user.getUserId());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date currentTime = new Date();
 		if (movieDb != null) {
 			//movieRepository.deleteMovie(movieDb);
-			movieDb.setIsRecentlyViewed(true);
+			
+			movieDb.setViewTime(currentTime);
+			System.out.println(dateFormat.format(currentTime));
 			movieRepository.updateMovie(movieDb);
 		}
 		else {
 			//Movie movie = formMovieObject(movieId, user.getUserId());
 			Movie movie = new Movie();
-			movie.setIsRecentlyViewed(true);
+			movie.setViewTime(currentTime);
+			System.out.println(dateFormat.format(currentTime));
 			movie.setMovieId(movieId);
 			movie.setUser(user);
 			movieRepository.saveMovie(movie);
@@ -268,6 +277,7 @@ public class MovieServiceImpl implements MovieService{
 			movie.setIsInWatchlist(true);
 			movie.setMovieId(movieId);
 			movie.setUser(user);
+			movie.setUserId(user.getUserId());
 			movieRepository.saveMovie(movie);
 		}
 		
@@ -306,6 +316,20 @@ public class MovieServiceImpl implements MovieService{
 			resultList.add(movie);
 		}			
 		return resultList;
+	}
+	@Override
+	public List<Movie> getNewMovies() {
+		TmdbMovies movies = tmdbApi.getMovies();
+		ResultsPage<MovieDb> moviesResults = movies.getNowPlayingMovies("english", 0);
+		
+		int pages = moviesResults.getTotalPages();
+		System.out.println("Top rated Total Pages: " + pages);
+		int totalResults = moviesResults.getTotalResults();
+		System.out.println("Top rated Total Results: " + totalResults);
+		
+		List<MovieDb> resultList = moviesResults.getResults();
+		List<Movie> moviesList = convertToMovieList(resultList);
+		return moviesList;
 	}
 	
 	

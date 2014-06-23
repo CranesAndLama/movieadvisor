@@ -19,6 +19,11 @@ public class MovieRepositoryImpl implements MovieRepository{
 	private EntityManager em;
 
 	public void saveMovie(Movie newMovie) {
+		System.out.println("Save Movie");
+		System.out.println(newMovie.getUser().getUserId());
+		System.out.println(newMovie.getUserId());
+		System.out.println(newMovie.getMovieId());
+		System.out.println(newMovie.getRating());
 		em.persist(newMovie);
 		em.flush();
 	}
@@ -53,6 +58,7 @@ public class MovieRepositoryImpl implements MovieRepository{
 	public List<Movie> getRecentlyViewed(Long userId) {
 		TypedQuery<Movie> query = em.createNamedQuery(Movie.GET_RECENTLY_VIEWED, Movie.class);
 		query.setParameter("userId", userId);
+		query.setMaxResults(10);
 		List<Movie> movies = query.getResultList();
 		return movies;
 	}

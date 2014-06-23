@@ -3,6 +3,7 @@ package movieadvisor.model;
 import info.movito.themoviedbapi.model.MovieDb;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,7 +14,31 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
 
-class MovieId {
+
+/*@Embeddable
+class MoviePK implements Serializable {
+    private Long movieId;
+    @ManyToOne
+	@JoinColumn(name="userId")
+	private User user;
+
+    public MoviePK() {
+    }
+    public int hashCode() {
+        return movieId.intValue() + user.hashCode();
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof MoviePK)) return false;
+        if (obj == null) return false;
+        MoviePK pk = (MoviePK) obj;
+        return pk.movieId.equals(movieId) 
+        		&& pk.user.getUserId().equals(user.getUserId());
+    }
+}*/
+
+class MovieId implements Serializable{
 	private Long movieId;
 	private Long userId;
 }
@@ -21,13 +46,22 @@ class MovieId {
 @Entity @IdClass(MovieId.class)
 @NamedQueries({
 	@NamedQuery(name=Movie.GET_RATING_BY_USERID_AND_MOVIEID, 
-			query="Select movie1 from Movie movie1 where (movie1.user.userId = :userId and movie1.movieId = :movieId)"),
+			query="SELECT movie1 "
+					+ "FROM Movie movie1 "
+					+ "WHERE (movie1.user.userId = :userId AND movie1.movieId = :movieId)"),
 	@NamedQuery(name=Movie.GET_USER_WATCHLIST, 
-			query="Select movie1 from Movie movie1 where (movie1.user.userId = :userId and movie1.isInWatchlist = true)"),
+			query="SELECT movie1 "
+					+ "FROM Movie movie1 "
+					+ "WHERE (movie1.user.userId = :userId AND movie1.isInWatchlist = true)"),
 	@NamedQuery(name=Movie.GET_RECENTLY_VIEWED, 
-			query="Select movie1 from Movie movie1 where (movie1.user.userId = :userId and movie1.isRecentlyViewed = true)"),
+			query="SELECT movie1 "
+					+ "FROM Movie movie1 "
+					+ "WHERE (movie1.user.userId = :userId AND movie1.viewTime IS NOT NULL) "
+					+ "ORDER BY movie1.viewTime DESC"),
 	@NamedQuery(name=Movie.GET_ALL_USER_MOVIES, 
-			query="Select movie1 from Movie movie1 where movie1.user.userId = :userId")
+			query="SELECT movie1 "
+					+ "FROM Movie movie1 "
+					+ "WHERE movie1.user.userId = :userId")
 })
 public class Movie implements Serializable, Comparable{
 
@@ -48,13 +82,17 @@ public class Movie implements Serializable, Comparable{
 	private Long movieId;
 	
 	@Id
+	private Long userId;
+	
+	
 	@ManyToOne
-	@JoinColumn(name="userId")
+	@JoinColumn(name="userId", insertable = false, updatable = false)
 	private User user;
 	
 	private Boolean isInWatchlist = false;
 	
-	private Boolean isRecentlyViewed = false;
+	private Date viewTime;
+	//private Boolean isRecentlyViewed = false;
 
 	@Transient
 	private MovieDb movieDb;
@@ -77,6 +115,12 @@ public class Movie implements Serializable, Comparable{
 	public void setId(int id) {
 		this.id = id;
 	}*/
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 	public Long getMovieId() {
 		return movieId;
 	}
@@ -117,11 +161,21 @@ public class Movie implements Serializable, Comparable{
 	public void setIsInWatchlist(Boolean isInWatchlist) {
 		this.isInWatchlist = isInWatchlist;
 	}
-	public Boolean getIsRecentlyViewed() {
+	/*public Boolean getIsRecentlyViewed() {
 		return isRecentlyViewed;
 	}
 	public void setIsRecentlyViewed(Boolean isRecentlyViewed) {
 		this.isRecentlyViewed = isRecentlyViewed;
+	}*/
+	public Date getViewTime() {
+		return viewTime;
+	}
+	public void setViewTime(Date viewTime) {
+		this.viewTime = viewTime;
+	}
+	@Override
+	public int hashCode() {
+		return movieId.hashCode() + user.getUserId().hashCode();
 	}
 	@Override
 	public boolean equals(Object other) {

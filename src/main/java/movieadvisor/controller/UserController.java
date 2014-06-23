@@ -37,10 +37,6 @@ public class UserController {
 	private MovieService movieService;
 	@Autowired
 	private FriendService friendService;
-	/*@Inject
-	public UserController(UserService userService){
-	this.userService=userService;
-	}*/
 	
 	@RequestMapping(value = "user/login", method = RequestMethod.GET)
 	public String showUserLoginForm(Model model) {
@@ -48,7 +44,7 @@ public class UserController {
 		return "loginForm";
 	}
 	@RequestMapping(value = "user/login", method = RequestMethod.POST)
-	public String loginUser(@ModelAttribute("user") User user,Model model, HttpSession session) {
+	public String loginUser(@ModelAttribute("user") User user, Model model, HttpSession session) {
 		User loginUser = userService.validateUserLogin(user);
 		
 		if (loginUser != null) {
@@ -70,7 +66,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "user/signup", method=RequestMethod.POST)
-	public String addUserFromForm(@Valid @ModelAttribute("newUser") User newUser,@RequestParam(value="image",required=false)
+	public String addUserFromForm(@Valid @ModelAttribute("newUser") User newUser, @RequestParam(value="image",required=false)
 								MultipartFile image, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
 				return"signupForm";
@@ -100,7 +96,7 @@ public class UserController {
 	Set<Friend> friendsSet = user.getFriends();
 	System.out.println("Friends before forming: " + friendsSet.size());
 	Set<User> friends = userService.formUsers(friendsSet);
-	System.out.println("Friends before forming: " + friends.size());
+	System.out.println("Friends after forming: " + friends.size());
 	model.addAttribute("friends", friends);
 	
 	List<Movie> recentlyViewed = movieService.getRecentlyViewed(user);
@@ -132,7 +128,7 @@ public class UserController {
 		return "allUsers";
 	}
 	@RequestMapping(value="addfriend/{friendId}", method=RequestMethod.GET)
-	public String addFriend(Model model, final @PathVariable Long friendId, HttpSession session) {
+	public String addFriend(final @PathVariable Long friendId, HttpSession session) {
 		User loginUser = (User)session.getAttribute("loginUser");
 		friendService.addFriend(loginUser, friendId);
 		return "redirect:/user/users";

@@ -8,11 +8,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Movie Advisor</title>
+
 </head>
 <body>
+<!-- 
 	<p>Set Movie Ratings</p>
 	<input type="button" onclick="location.href='/movieadvisor/rate'" value="rate movies script">
-
+ -->
 	<p>Top Rated Movies: </p>
 	<c:forEach var="movie" items="${topRated}">
 		<s:url value="/movies/{movieId}"
@@ -31,74 +33,51 @@
 				<c:out value="${movie.movieDb.title}"/>
 			</a>
 			
-			<p>ID: <c:out value="${movie.movieDb.id}"/><p>
-			<p>Rating: <c:out value="${movie.movieDb.voteAverage}"/><p>
+			<p>ID: <c:out value="${movie.movieDb.id}"/></p>
+			<p>Rating: <c:out value="${movie.movieDb.voteAverage}"/></p>
 			<p>Release Date: <c:out value="${movie.movieDb.releaseDate}"/></p>
-			<p>Your rating: <c:out value="${movie.rating}"/></p>
-			<p>Is in Watchlist <c:out value="${movie.isInWatchlist}"/></p>
+			<p>Your rating: <span class="rating"><c:out value="${movie.rating}"/></span></p>
+			<p>Is in Watchlist <span class="watchlist"><c:out value="${movie.isInWatchlist}"/></span></p>
 			
 			<c:set var="isInWatchlist" scope="session" value="${movie.isInWatchlist}"/>
 			<c:choose>
-      			<c:when test="${isInWatchlist==true}">
-					<input type="button" onclick="location.href='/movieadvisor/removefromwatchlist/${movie.movieDb.id}'" value="Remove From Watchlist">
-      				<br />
+      			<c:when test="${isInWatchlist==true}"> 
+					<input type="button" onclick="removeFromWatchlist('/movieadvisor/removefromwatchlist/${movie.movieDb.id}')" value="Remove From Watchlist"></input>
+      				<br/>
       			</c:when>
 
       			<c:otherwise>
-      			<input type="button" onclick="location.href='/movieadvisor/addtowatchlist/${movie.movieDb.id}'" value="Add To Watchlist">
+      				<input type="button" onclick="addToWatchlist('/movieadvisor/addtowatchlist/${movie.movieDb.id}')" value="Add To Watchlist"></input>
       				<br/>
       			</c:otherwise>
 			</c:choose>
 			
-			<!-- Dropdown list 
-			<br>
-			Rate Movie:
+			<!-- 
 			<form:form method="POST" modelAttribute="ratedMovie" action="/movieadvisor/ratemovie/${movie.movieDb.id}">
-				<table>
-    				<tbody><tr>
-    					<td>
-        					<ul>
-            					<form:select path="rating">
-            						<form:option selected="selected" value=""></form:option>
-                					<form:option value="1">1</form:option>
-                					<form:option value="2">2</form:option>
-                					<form:option value="3">3</form:option>
-                					<form:option value="4">4</form:option>
-                					<form:option value="5">5</form:option>
-                					<form:option value="6">6</form:option>
-                					<form:option value="7">7</form:option>
-                					<form:option value="8">8</form:option>
-                					<form:option value="9">9</form:option>
-                					<form:option value="10">10</form:option>
-           						 </form:select>
-        					</ul>
-    					</td>
-    				</tr>
-    				<tr>
-    					<td>
-            				<input value="Submit" type="submit">
-        				</td>
-    				</tr>
-				</tbody></table> 
 			</form:form>
-			-->
-			
-			<form:form method="POST" modelAttribute="ratedMovie" action="/movieadvisor/ratemovie/${movie.movieDb.id}">
+			 -->
+			 
+			<form:form class="rateMovieForm" method="POST" modelAttribute="ratedMovie" data-id="/movieadvisor/ratemovie/${movie.movieDb.id}">
 			<fieldset>
 			<table cellspacing="0">
 			<tr>
 					<th><label for="movie_rating">rate movie:</label></th>
-					<td><form:input path="rating" size="30" id="movie_rating"/>						
+					<td><form:input path="rating" size="30" class="movie_rating"/>						
 						
 					</td>
 			</tr>
-			
 			<tr>
 					<th></th>
 					<td>
-						<input name="commit" type="submit" value="Rate"/>
+						<!--
+						<c:set var="ratedUrl" scope="session" value="/movieadvisor/ratemovie/${movie.movieDb.id}"/>
+						-->
+						<input id="rateId" name="commit" type="submit" value="Rate"/>
+						
 					</td>
 			</tr>
+			<tr><td colspan="2"><div id="info" style="color: green;"></div></td></tr>
+			
 			</table>
 			</fieldset>
 		</form:form>
