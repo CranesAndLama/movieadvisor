@@ -25,6 +25,8 @@ public class HomeController {
 	@RequestMapping(value = "/main")
 	public String mainPage(Model model, HttpSession session) {
 		
+		model.addAttribute("newUser", new User());
+		
 		User loginUser = (User)session.getAttribute("loginUser");
 		if (loginUser != null) {
 			return "forward:/mainlogged";

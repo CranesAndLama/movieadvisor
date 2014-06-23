@@ -55,7 +55,7 @@ public class UserController {
 		}
 		else {
 			System.out.println("User failed to login");
-			return "loginForm";
+			return "main";
 		}
 	}
 	
@@ -66,14 +66,13 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "user/signup", method=RequestMethod.POST)
-	public String addUserFromForm(@Valid @ModelAttribute("newUser") User newUser, @RequestParam(value="image",required=false)
-								MultipartFile image, BindingResult bindingResult) {
+	public String addUserFromForm(@Valid @ModelAttribute("newUser") User newUser, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
-				return"signupForm";
+				return "main";
 		}
 		//save user in the database
 		userService.saveUser(newUser);
-		try {
+		/*try {
 			if (!image.isEmpty()) {
 				ImageProcessor.validateImage(image);
 				ImageProcessor.saveImage(newUser.getUserId()+".jpg",image);
@@ -82,7 +81,7 @@ public class UserController {
 		catch(RuntimeException e) {
 			bindingResult.reject(e.getMessage());
 			return"signupForm";
-		}
+		}*/
 		
 		return "redirect:/main";
 	}
