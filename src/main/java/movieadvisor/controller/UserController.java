@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
-@SessionAttributes({"loginUser", "greeting"})
+@SessionAttributes({"loginUser", "greeting", "newUser"})
 public class UserController {
 	@Autowired
 	private UserService userService;

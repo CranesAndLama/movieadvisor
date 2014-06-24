@@ -1,11 +1,13 @@
 package movieadvisor.service;
 
-import java.util.List;
+import info.movito.themoviedbapi.model.MovieDb;
 
-import org.apache.mahout.cf.taste.common.TasteException;
+import java.util.List;
 
 import movieadvisor.model.Movie;
 import movieadvisor.model.User;
+
+import org.apache.mahout.cf.taste.common.TasteException;
 
 public interface MovieService {
 	
@@ -13,7 +15,7 @@ public interface MovieService {
 	
 	Movie getMovieFromDb(Long movieId, Long userId);
 	
-	List<Movie> getTopRated(Integer page);
+	List<Movie> getTopRated(Integer page, Integer from, Integer to);
 
 	void rateMovie(User user, Long movie, Byte rating);
 
@@ -37,7 +39,7 @@ public interface MovieService {
 
 	List<Movie> getRecommendations(Long userId) throws TasteException;
 
-	List<Movie> getNewMovies();
+	List<Movie> getNewMovies(Integer page, Integer from, Integer to);
 
 	
 }

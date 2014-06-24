@@ -19,7 +19,8 @@
 </html>
  -->
 
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <!doctype html>
 <html>
 <head>
@@ -39,21 +40,36 @@
         <ul class="main_nav">
             <li class="color1"><a href="">Watchlist</a></li>
             <li class="color2"><a href="">Recommendations</a></li>
+            
             <li class="color3"><a href="">Account</a></li>
+            
         </ul>
         <div class="fl-r">
             <form class="search_wrap">
                 <input type="text" placeholder="Search" class="search_inp" id="search_inp"/>
                 <button class="search_icon"></button>
             </form>
-            <div class="login_zone">
-                <div class="signin" data-hover="SignIn">
-                    <span>SignIn</span>
-                </div>
-                <div class="signup" data-hover="SignUp">
-                    <span>SignUp</span>
-                </div>
-            </div>
+            
+            <c:choose>
+      			<c:when test="${loginUser==null}"> 
+					<div class="login_zone">
+                		<div class="signin" data-hover="SignIn">
+                    		<span>SignIn</span>
+                		</div>
+                		<div class="signup" data-hover="SignUp">
+                    		<span>SignUp</span>
+                		</div>
+            		</div>
+      			</c:when>
+
+      			<c:otherwise>
+      				<s:url value="/user/{username}" var="user_url">
+								<s:param name="username" value="${loginUser.username}"/>
+					</s:url>
+      				 <a class="user_av" style="background: url('/resources/img/${loginUser.userId}.jpg') no-repeat center center" href="${user_url}"></a>
+      			</c:otherwise>
+			</c:choose>
+            
         </div>
     </div>
 </header>

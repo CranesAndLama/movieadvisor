@@ -39,6 +39,7 @@ public class MovieServiceImpl implements MovieService{
 		TmdbMovies movies = tmdbApi.getMovies();
 		MovieDb moviedb = movies.getMovie(movieId, "en");
 		Movie movie = new Movie(moviedb);
+		
 		return movie;
 	}
 	private void setMovieDb(Movie movie) {
@@ -103,21 +104,26 @@ public class MovieServiceImpl implements MovieService{
 	}
 	*/
 	
-	public List<Movie> getTopRated(Integer page) {
+	public List<Movie> getTopRated(Integer page, Integer from, Integer to) {
 		TmdbMovies movies = tmdbApi.getMovies();
 		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", page);
 		
-		/*int count = 1;
-		for (moviesResults.getTotalPages()) {
-			
-		}*/
+		
+		
 		int pages = moviesResults.getTotalPages();
 		System.out.println("Top rated Total Pages: " + pages);
 		int totalResults = moviesResults.getTotalResults();
 		System.out.println("Top rated Total Results: " + totalResults);
 		
 		List<MovieDb> resultList = moviesResults.getResults();
-		List<Movie> moviesList = convertToMovieList(resultList);
+		List<Movie> moviesList = new ArrayList<Movie>();
+		if (from != null) {
+			List<MovieDb> returnObjects = resultList.subList(from, to);
+			moviesList = convertToMovieList(returnObjects); 
+		}
+		else {
+			moviesList = convertToMovieList(resultList); 
+		}
 		return moviesList;
 	}
 	private List<Movie> convertToMovieList(List<MovieDb> moviDbList) {
@@ -133,7 +139,9 @@ public class MovieServiceImpl implements MovieService{
 		List<Movie> resultMovieList = new ArrayList<Movie>();
 		TmdbMovies movies = tmdbApi.getMovies();
 		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", 0);
+		
 		List<MovieDb> resultList = moviesResults.getResults();
+		//List<MovieDb> returnObjects = resultList.subList(fromIndex, toIndex);
 		resultList.sort(null);
 		List<Movie> userMovies = movieRepository.getAllUserMovies(user.getUserId());
 		userMovies.sort(null);
@@ -317,10 +325,9 @@ public class MovieServiceImpl implements MovieService{
 		}			
 		return resultList;
 	}
-	@Override
-	public List<Movie> getNewMovies() {
+	public List<Movie> getNewMovies(Integer page, Integer from, Integer to) {
 		TmdbMovies movies = tmdbApi.getMovies();
-		ResultsPage<MovieDb> moviesResults = movies.getNowPlayingMovies("english", 0);
+		ResultsPage<MovieDb> moviesResults = movies.getNowPlayingMovies("english", page);
 		
 		int pages = moviesResults.getTotalPages();
 		System.out.println("Top rated Total Pages: " + pages);
@@ -328,7 +335,16 @@ public class MovieServiceImpl implements MovieService{
 		System.out.println("Top rated Total Results: " + totalResults);
 		
 		List<MovieDb> resultList = moviesResults.getResults();
-		List<Movie> moviesList = convertToMovieList(resultList);
+		List<Movie> moviesList = new ArrayList<Movie>();
+		//List<MovieDb> returnObjects = new ArrayList<MovieDb>();
+		if (from != null) {
+			List<MovieDb> returnObjects = resultList.subList(from, to);
+			moviesList = convertToMovieList(returnObjects); 
+		}
+		else {
+			moviesList = convertToMovieList(resultList); 
+		}
+		//return returnObjects;
 		return moviesList;
 	}
 	

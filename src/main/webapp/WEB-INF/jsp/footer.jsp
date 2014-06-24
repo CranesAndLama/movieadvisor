@@ -35,7 +35,7 @@
 						<small>6 characters or more(be tricky!)</small><br>
 						<sf:errors path="password" cssClass="error"/>
 						
-						<input name="commit" type="submit" value="Create my account."/>
+						<input class="btn1" name="commit" type="submit" value="Create my account."/>
 				</sf:form>
                     <div class="soc_login">
                         <h3>SignUp Socials</h3>
@@ -72,7 +72,7 @@
 						<sf:password path="password" size="30" showPassword="true" id="user_password"/>
 						<sf:errors path="password" cssClass="error"/>
 							
-						<input name="commit" type="submit" value="Login"/>
+						<input class="btn1" name="commit" type="submit" value="Login"/>
 						
 					</sf:form>
                     

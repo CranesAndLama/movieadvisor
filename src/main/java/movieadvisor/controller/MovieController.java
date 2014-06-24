@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"loginUser", "greeting"})
+@SessionAttributes({"loginUser", "greeting", "newUser"})
 public class MovieController {
 	
 	@Autowired

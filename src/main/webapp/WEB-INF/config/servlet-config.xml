@@ -28,6 +28,39 @@
 		</property>
 	</bean>
 -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="1"/>
+		<property name="contentNegotiationManager">
+			<bean class="org.springframework.web.accept.ContentNegotiationManager">
+				<constructor-arg>
+					<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+						<constructor-arg>
+							<map>
+								<entry key="json" value="application/json"/>
+								<entry key="xml" value="application/xml"/>
+							</map>
+						</constructor-arg>
+					</bean>
+				</constructor-arg>
+			</bean>
+		</property>
+
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+				<!-- 
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<constructor-arg>
+						<bean class="org.springframework.oxm.xstream.XStreamMarshaller">
+							<property name="autodetectAnnotations" value="true"></property>
+						</bean>
+					</constructor-arg>
+				</bean>
+				 -->
+			</list>
+		</property>
+	</bean> 
+	
 	<bean id="viewResolver"
     	class="org.springframework.web.servlet.view.UrlBasedViewResolver">
     <property name="viewClass">
@@ -35,6 +68,7 @@
             org.springframework.web.servlet.view.tiles2.TilesView
         </value>
     </property>
+    <property name="order" value="2"/>
 	</bean>
 	<bean id="tilesConfigurer"
     	class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
