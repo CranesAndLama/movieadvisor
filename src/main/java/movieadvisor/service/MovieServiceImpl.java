@@ -94,13 +94,16 @@ public class MovieServiceImpl implements MovieService{
 		//set background image
 		MovieImages images = movies.getImages(i, "en");
 		List<Artwork> posters = images.getPosters();
-		List<Artwork> firstPoster = posters.subList(0, 1);
+		String backgroundPosterFilePath = posters.get(1).getFilePath();
+		
+		/*List<Artwork> firstPoster = posters.subList(0, 1);
 		images.setPosters(firstPoster);
 		
-		movieDb.setImages(images);
+		movieDb.setImages(images);*/
 
 		movie.setMovieDb(movieDb);
 		movie.setPoster(Movie.POSTER_BASE_URL + movieDb.getPosterPath());
+		movie.setBackgroundPoster(Movie.POSTER_BASE_URL + backgroundPosterFilePath);
 	}
 	public Movie getMovieFromDb(Long movieId, Long userId) {
 		Movie movieDb = movieRepository.getMovie(movieId, userId);

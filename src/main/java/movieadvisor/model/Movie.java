@@ -99,7 +99,11 @@ public class Movie implements Serializable, Comparable{
 	
 	@Transient
 	private String poster;
+	
+	@Transient
+	private String backgroundPoster;
 
+	
 	public Movie() {
 		
 	}
@@ -172,6 +176,12 @@ public class Movie implements Serializable, Comparable{
 	}
 	public void setViewTime(Date viewTime) {
 		this.viewTime = viewTime;
+	}
+	public String getBackgroundPoster() {
+		return backgroundPoster;
+	}
+	public void setBackgroundPoster(String backgroundPoster) {
+		this.backgroundPoster = backgroundPoster;
 	}
 	@Override
 	public int hashCode() {
