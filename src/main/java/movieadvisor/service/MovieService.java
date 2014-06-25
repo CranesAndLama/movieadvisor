@@ -41,5 +41,7 @@ public interface MovieService {
 
 	List<Movie> getNewMovies(Integer page, Integer from, Integer to);
 
+	List<Movie> getNewMoviesFromDb(User loginUser);
+
 	
 }

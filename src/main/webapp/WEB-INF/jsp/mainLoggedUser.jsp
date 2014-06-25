@@ -121,7 +121,7 @@
 </html>
 
  -->
-
+<body class="logged">
 <section class="maincontent s-color1">
     <div class="wrap">
         <div class="leftcontent">
@@ -135,9 +135,10 @@
 								var="movie_url">
 								<s:param name="movieId"
 									value="${movie.movieDb.id}"/>
-							</s:url>
-										
-                            <a style="background: url("${movie.poster}") no-repeat center center" href="${movie_url}">
+							</s:url>	
+                             
+                            <a style="background: url(${movie.poster}) no-repeat center center" href="${movie_url}">
+                             
                                 <span class="movie-hover">
                                      <div class="desc">
                                          <h2><c:out value="${movie.movieDb.title}"/></h2>
@@ -220,10 +221,8 @@
                     <c:forEach var="movie" items="${topRated}">
                         <li class="movie-item">
                         
-                        	<s:url value="/movies/{movieId}"
-								var="movie_url">
-								<s:param name="movieId"
-									value="${movie.movieDb.id}"/>
+                        	<s:url value="/movies/{movieId}" var="movie_url">
+								<s:param name="movieId" value="${movie.movieDb.id}"/>
 							</s:url>
 										
                             <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
@@ -272,7 +271,7 @@
                         <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
 
                             <h2 class="movie-title">
-                                <span>Kill Bill</span>
+                                <span><c:out value="${movie.movieDb.title}"/></span>
                             </h2>
                             <div class="btns">
 
@@ -289,3 +288,4 @@
         </div>
     </div>
 </section>
+</body>

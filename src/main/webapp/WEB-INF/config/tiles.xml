@@ -28,7 +28,7 @@
     </definition>
     <definition name="viewMovie" extends="base.definition">
         <put-attribute name="title" value="Movie" />
-        <put-attribute name="body" value="/WEB-INF/jsp/viewMovie.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/movieView.jsp" />
     </definition>
     <definition name="userView" extends="base.definition">
         <put-attribute name="title" value="User profile" />

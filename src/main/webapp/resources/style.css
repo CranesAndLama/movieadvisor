@@ -359,14 +359,14 @@ overflow: hidden;
 .movie-item:hover .movie-title{
     bottom: -100%;
 }
-.movie-item:hover .movie-hover h2{
+.movie-item .movie-hover h2{
     color: #16A79D;
     font-size: 18px;
     font-family: raleway-black;
     margin-bottom: 10px;
     text-transform: uppercase;
 }
-.movie-item:hover .movie-hover p{
+.movie-item .movie-hover p{
     color: rgba(255,255,255,.8);
     font-family: "raleway-regular";
     margin-bottom: 10px;
@@ -384,7 +384,7 @@ overflow: hidden;
     text-align: right;
     left: 0;
 }
-.btns span{
+.btns > span{
     display: inline-block;
     vertical-align: top;
     margin-left: 10px;
@@ -1224,5 +1224,63 @@ h4 a:hover{
 }
 .pager_nav.next:hover a:before{
     right: 20px;
+}
+
+/*------24.06-----------*/
+.raiting-box{
+    background: #16A79D;
+    padding: 15px;
+    position: relative;
+    width: 245px;
+}
+.raiting-box .star{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 5px;
+    background-position: -193px -30px;
+    width: 20px;
+    height: 19px;
+    margin-left: -1px;
+}
+.rate_popup_wrap{
+    position: absolute;
+    display: none;
+    top: 38px;
+    left: -155px;
+}
+.rate_popup_wrap.open{
+    display: block !important;
+}
+.raiting-box .active_star, .raiting-box .active_checked_star,.raiting-box .star.active  {
+    background-position: -222px -30px;
+
+}
+.movie-item.open{
+    overflow: visible;
+
+}
+.movie-item.open .rate,.movie-item.open, .movie-item.open a, .movie-item.open .btns > span, .movie-item.open .movie-hover{
+    transition: all 0.01s;
+}
+.movie-item.open .movie-hover{
+    top: 0;
+}
+.movie-item.open .movie-title{
+    display: none;
+}
+.raiting-box:before{
+    content:"";
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-bottom: 7px solid #16A79D;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    top: -7px;
+    left: 61%;
+    margin-left: -7px;
+}
+.rate_popup .star:last-child{
+    margin-right: 0;
 }
 

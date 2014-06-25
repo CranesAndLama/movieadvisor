@@ -31,17 +31,18 @@
     <link rel="stylesheet" type="text/css" href="/movieadvisor/resources/style.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="/movieadvisor/resources/js/script.js" type="text/javascript"></script>
+	<script src="/movieadvisor/resources/js/ajax.js" type="text/javascript"></script>
 
 </head>
-<body class="notLogg">
+
 <header class="main_head">
     <div class="wrap">
-        <a class="logo" href="">Logo</a>
+        <a class="logo" href="/movieadvisor/main">Logo</a>
         <ul class="main_nav">
             <li class="color1"><a href="">Watchlist</a></li>
             <li class="color2"><a href="">Recommendations</a></li>
             
-            <li class="color3"><a href="">Account</a></li>
+            <li class="color3"><a href="/movieadvisor/user/${loginUser.username}">Account</a></li>
             
         </ul>
         <div class="fl-r">
@@ -66,7 +67,12 @@
       				<s:url value="/user/{username}" var="user_url">
 								<s:param name="username" value="${loginUser.username}"/>
 					</s:url>
-      				 <a class="user_av" style="background: url('/resources/img/${loginUser.userId}.jpg') no-repeat center center" href="${user_url}"></a>
+					<!-- 
+      				 <a class="user_av" href="${user_url}">
+   						<img src="/movieadvisor/resources/img/${loginUser.userId}.jpg" />
+					</a>
+					 -->
+      				<a class="user_av" style="background: url('/movieadvisor/resources/img/${loginUser.userId}.jpg') no-repeat center center" href="${user_url}"></a>
       			</c:otherwise>
 			</c:choose>
             

@@ -76,6 +76,7 @@ public class HomeController {
 		
 		model.addAttribute("recommended", movieService.getRecommendations(loginUser.getUserId()));
 		model.addAttribute("topRated", movieService.getTopRatedFromDb(loginUser));
+		model.addAttribute("newMovies", movieService.getNewMoviesFromDb(loginUser));
 		
 		//String rating = "";
 		Movie movie = new Movie();

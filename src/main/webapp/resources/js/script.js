@@ -1,56 +1,6 @@
- 	$(document).ready(function() {
- 		
- 		$('.rateMovieForm').submit(function(event) {
- 		event.preventDefault();
- 		console.log(this);
- 		 var rating = $(this).find(".movie_rating").val();
- 		 var urlValue = $(this).data("id");
- 		 
- 		var ratingResponce =  $(this).closest('li').find('.rating');
- 		
- 		console.log('0: ', ratingResponce.html());
- 		 //var urlValue = $("#ratedUrl").val();
- 		 $.ajax({
- 			url: urlValue,
- 			//url: $("#rateMovieForm").attr("action"),
- 			data: {rating: rating},
- 			type: "POST",
- 	        }).done (function(responce) {
- 	    	   ratingResponce.html(responce);
- 	    	}).fail (function(err) {
- 	    	   console.error(err);
- 	    	});
- 		});
- 	});
-
-function removeFromWatchlist(url) {
-	 var watchlistResponce =  $(this).closest('li').find('.watchlist');
-	 console.log('0: ', watchlistResponce.html());
-	$.ajax({
-		 url:url,
-		 type: "GET"
-	 }).done (function(responce) {
-		 watchlistResponce.html(responce);
-	 }).fail (function(err) {
-		console.error(err);
-	});
-}
-function addToWatchlist(url) {
-	 var watchlistResponce =  $(this).closest('li').find('.watchlist');
-	 console.log('0: ', watchlistResponce.html());
-	$.ajax({
-		 url:url,
-		 type: "GET"
-	 }).done (function(responce) {
-		 watchlistResponce.html(responce);
-	 }).fail (function(err) {
-		console.error(err);
-	});
-}	
- 
 jQuery.fn.exists = function () {
     return jQuery(this).length;
-}
+};
 
 var Page = {
     tabs: function (a) {
@@ -120,9 +70,40 @@ var Page = {
             }
         }
 
+    },
+    rating: function(){
+        jQuery(".raiting-box .star").click(function(){
+            var val = parseInt(jQuery(this).html());
+            console.log(val);
+            jQuery(".raiting-box .star").removeClass("check");
+            jQuery(".raiting-box .star").removeClass("active");
+            jQuery(".raiting-box .star").removeClass("active_checked_star");
+            jQuery(this).addClass("active");
+            jQuery(this).addClass("check");
+            var inp_id = jQuery(this).parents('.rate').find('input').attr('id');
+            console.log(inp_id);
+            jQuery('#' + inp_id).val(val);
+            var $lis = jQuery(this).siblings("span").andSelf();
+            var id   = jQuery(this).index();
+
+            $lis.removeClass("active_checked_star");
+            $lis.slice(0, id+1 ).addClass("active_checked_star");
+            jQuery('.rate_popup_wrap').hide();
+        });
+        jQuery(".raiting-box .star").mouseenter(function(){
+
+            var $lis = jQuery(this).siblings(".star").andSelf();
+            var id   = jQuery(this).index();
+
+            $lis.removeClass("active_star");
+            $lis.slice(0, id+1 ).addClass("active_star");
+        }).mouseout(function(){
+            jQuery('.user_rate span').removeClass("active_star");
+        });
     }
 
-}
+};
+
 
 jQuery(document).ready(function () {
     jQuery('#newMovies').show().animate({'opacity': '1'}, 500);
@@ -145,14 +126,24 @@ jQuery(document).ready(function () {
     jQuery('.icon-close').click(function () {
         Page.closeForm('.morph-button');
     });
-   
     jQuery('.form_content').click(function (e) {
         if (!jQuery(e.target).parents().hasClass('morph-content')) {
             Page.closeForm('.morph-button');
         }
-
     });
+
     Page.searchInput();
     Page.closeSearch();
     Page.columns();
+
+    jQuery('.rate').click(function(e){
+
+        jQuery(this).find('.rate_popup_wrap').toggleClass('open');
+        jQuery(this).parents('.movie-item').toggleClass('open');
+        Page.rating();
+        e.preventDefault();
+    });
+
+
+
 });

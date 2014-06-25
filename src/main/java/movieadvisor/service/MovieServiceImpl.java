@@ -2,8 +2,13 @@ package movieadvisor.service;
 
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbMovies;
+import info.movito.themoviedbapi.model.Artwork;
+import info.movito.themoviedbapi.model.Credits;
 import info.movito.themoviedbapi.model.MovieDb;
+import info.movito.themoviedbapi.model.MovieImages;
 import info.movito.themoviedbapi.model.core.ResultsPage;
+import info.movito.themoviedbapi.model.people.PersonCast;
+import info.movito.themoviedbapi.model.people.PersonCrew;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +22,8 @@ import movieadvisor.model.User;
 import movieadvisor.recommender.RecommenderEngine;
 import movieadvisor.repository.MovieRepository;
 //import movieadvisor.repository.WatchlistRepository;
+
+
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
@@ -37,8 +44,31 @@ public class MovieServiceImpl implements MovieService{
 	
 	public Movie getMovie(int movieId) {
 		TmdbMovies movies = tmdbApi.getMovies();
-		MovieDb moviedb = movies.getMovie(movieId, "en");
-		Movie movie = new Movie(moviedb);
+		MovieDb movieDb = movies.getMovie(movieId, "en");
+		
+		//set movieDb properties
+		Credits credits = movies.getCredits(movieId);
+		
+		//set first three cast person
+		List<PersonCast> cast = credits.getCast();
+		List<PersonCast> firstThreeStars = cast.subList(0, 3);
+		credits.setCast(firstThreeStars);
+		//set director and producer
+		List<PersonCrew> crew = credits.getCrew();
+		List<PersonCrew> dirAndProd = crew.subList(0, 2);
+		credits.setCrew(dirAndProd);
+		
+		movieDb.setCredits(credits);
+		
+		//set background image
+		MovieImages images = movies.getImages(movieId, "en");
+		List<Artwork> posters = images.getPosters();
+		List<Artwork> firstPoster = posters.subList(0, 1);
+		images.setPosters(firstPoster);
+		
+		movieDb.setImages(images);
+		
+		Movie movie = new Movie(movieDb);
 		
 		return movie;
 	}
@@ -46,7 +76,31 @@ public class MovieServiceImpl implements MovieService{
 		TmdbMovies movies = tmdbApi.getMovies();
 		int i = movie.getMovieId().intValue();
 		MovieDb movieDb = movies.getMovie(i, "en");
+		
+		//set movieDb properties
+		Credits credits = movies.getCredits(i);
+		
+		//set first three cast person
+		List<PersonCast> cast = credits.getCast();
+		List<PersonCast> firstThreeStars = cast.subList(0, 3);
+		credits.setCast(firstThreeStars);
+		//set director and producer
+		List<PersonCrew> crew = credits.getCrew();
+		List<PersonCrew> dirAndProd = crew.subList(0, 2);
+		credits.setCrew(dirAndProd);
+		
+		movieDb.setCredits(credits);
+		
+		//set background image
+		MovieImages images = movies.getImages(i, "en");
+		List<Artwork> posters = images.getPosters();
+		List<Artwork> firstPoster = posters.subList(0, 1);
+		images.setPosters(firstPoster);
+		
+		movieDb.setImages(images);
+
 		movie.setMovieDb(movieDb);
+		movie.setPoster(Movie.POSTER_BASE_URL + movieDb.getPosterPath());
 	}
 	public Movie getMovieFromDb(Long movieId, Long userId) {
 		Movie movieDb = movieRepository.getMovie(movieId, userId);
@@ -136,64 +190,13 @@ public class MovieServiceImpl implements MovieService{
 	}
 	
 	public List<Movie> getTopRatedFromDb(User user) {
-		List<Movie> resultMovieList = new ArrayList<Movie>();
+		
 		TmdbMovies movies = tmdbApi.getMovies();
 		ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", 0);
 		
 		List<MovieDb> resultList = moviesResults.getResults();
 		//List<MovieDb> returnObjects = resultList.subList(fromIndex, toIndex);
-		resultList.sort(null);
-		List<Movie> userMovies = movieRepository.getAllUserMovies(user.getUserId());
-		userMovies.sort(null);
-		//for movie
-		int i = 0;
-		//for movieDb
-		int j = 0;
-		boolean notStop = true;
-		boolean endOfUserMovies = false;
-		
-		while(notStop) {
-			if (endOfUserMovies || userMovies.size() == 0) {
-				MovieDb movieDb = resultList.get(j);
-				++j;
-				if (resultList.size() == j) 
-					notStop = false;
-					
-				Movie movie = new Movie(movieDb);
-				resultMovieList.add(movie);
-			}
-			else {
-			Movie movie = userMovies.get(i);
-			MovieDb movieDb = resultList.get(j);
-			
-			if (movieDb.getId() > movie.getMovieId()) {
-				++i;
-				if (userMovies.size() == i) {
-					endOfUserMovies = true;
-				}
-			}
-			else if (movieDb.getId() < movie.getMovieId()) {
-				++j;
-				if (resultList.size() == j) 
-					notStop = false;
-					
-				movie = new Movie(movieDb);
-				resultMovieList.add(movie);
-			}
-			else {
-				movie.setMovieDb(movieDb);
-				resultMovieList.add(movie);
-				++i;
-				++j;
-				if (resultList.size() == j) 
-					notStop = false;
-				
-				if (userMovies.size() == i) {
-					endOfUserMovies = true;
-				}
-			}
-			}
-		}
+		List<Movie> resultMovieList = checkAndFormMovieObjects(resultList, user);
 		return resultMovieList;	
 			/*
 			Integer i = movieDb.getId();
@@ -268,6 +271,7 @@ public class MovieServiceImpl implements MovieService{
 			System.out.println(dateFormat.format(currentTime));
 			movie.setMovieId(movieId);
 			movie.setUser(user);
+			movie.setUserId(user.getUserId());
 			movieRepository.saveMovie(movie);
 		}
 	}
@@ -302,6 +306,7 @@ public class MovieServiceImpl implements MovieService{
 		for (Movie movie: movies) {
 			
 			setMovieDb(movie);
+			
 			System.out.println("Watchlist movie: " + movie.getMovieDb().getTitle());
 		}
 		return movies;	
@@ -347,11 +352,76 @@ public class MovieServiceImpl implements MovieService{
 		//return returnObjects;
 		return moviesList;
 	}
+	public List<Movie> getNewMoviesFromDb(User loginUser) {
+		
+		TmdbMovies movies = tmdbApi.getMovies();
+		ResultsPage<MovieDb> moviesResults = movies.getNowPlayingMovies("english", 0);
+		
+		List<MovieDb> resultList = moviesResults.getResults();
+		//List<MovieDb> returnObjects = resultList.subList(fromIndex, toIndex);
+		List<Movie> resultMovieList = checkAndFormMovieObjects(resultList, loginUser);
+		
+		
+		return resultMovieList;	
+	}
+	private List<Movie> checkAndFormMovieObjects(List<MovieDb> resultList, User user) {
+		List<Movie> resultMovieList = new ArrayList<Movie>();
+		resultList.sort(null);
+		List<Movie> userMovies = movieRepository.getAllUserMovies(user.getUserId());
+		userMovies.sort(null);
+		//for movie
+		int i = 0;
+		//for movieDb
+		int j = 0;
+		boolean notStop = true;
+		boolean endOfUserMovies = false;
+		
+		while(notStop) {
+			if (endOfUserMovies || userMovies.size() == 0) {
+				MovieDb movieDb = resultList.get(j);
+				++j;
+				if (resultList.size() == j) 
+					notStop = false;
+					
+				Movie movie = new Movie(movieDb);
+				resultMovieList.add(movie);
+			}
+			else {
+			Movie movie = userMovies.get(i);
+			MovieDb movieDb = resultList.get(j);
+			
+			if (movieDb.getId() > movie.getMovieId()) {
+				++i;
+				if (userMovies.size() == i) {
+					endOfUserMovies = true;
+				}
+			}
+			else if (movieDb.getId() < movie.getMovieId()) {
+				++j;
+				if (resultList.size() == j) 
+					notStop = false;
+					
+				movie = new Movie(movieDb);
+				resultMovieList.add(movie);
+			}
+			else {
+				movie.setMovieDb(movieDb);
+				movie.setPoster(Movie.POSTER_BASE_URL + movieDb.getPosterPath());
+				resultMovieList.add(movie);
+				++i;
+				++j;
+				if (resultList.size() == j) 
+					notStop = false;
+				
+				if (userMovies.size() == i) {
+					endOfUserMovies = true;
+				}
+			}
+			}
+		}
+		return resultMovieList;
+	}
 	
-	
-
-	
-
 	/*	public static void main(String[] args) {
 	TmdbApi tmdbApi = new TmdbApi(API_KEY);
 	TmdbMovies movies = new TmdbApi(API_KEY).getMovies();

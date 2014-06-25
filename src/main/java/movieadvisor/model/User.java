@@ -44,8 +44,6 @@ public class User {
 	@Pattern(regexp=EMAIL_PATTERN, message="Invalid email address.")
 	private String email;
 	
-	/*@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private List<Watchlist> watchlist = new ArrayList<Watchlist>(0);*/  
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<Movie> ratedMovies = new ArrayList<Movie>(0);
@@ -53,10 +51,6 @@ public class User {
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Friend> friends = new HashSet<Friend>(0);
 	
-	/*@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private List<RecentlyViewedMovie> recentlyViewed = new ArrayList<RecentlyViewedMovie>(0);*/
-	
-
 	
 /*	private String city;
 	private String country;

@@ -99,6 +99,7 @@ public class UserController {
 	model.addAttribute("friends", friends);
 	
 	List<Movie> recentlyViewed = movieService.getRecentlyViewed(user);
+	List<Movie> watchlist = movieService.getUserWatchlist(user.getUserId());
 	//System.out.println("movie collection size before forming objects" + recentlyViewed.size());
 	//List<Movie> recentlyViewedMovies = movieService.formMovies(recentlyViewed);
 	
@@ -111,9 +112,9 @@ public class UserController {
 	}*/
 	
 	model.addAttribute("recentlyViewedMovies", recentlyViewed);
-	
-	List<Movie> recommended = movieService.getRecommendations(user.getUserId());
-	model.addAttribute("recommended", recommended);
+	model.addAttribute("watchlist", watchlist);
+	/*List<Movie> recommended = movieService.getRecommendations(user.getUserId());
+	model.addAttribute("recommended", recommended);*/
 	
 	return "userView";
 	}

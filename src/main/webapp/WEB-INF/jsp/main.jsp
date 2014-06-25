@@ -57,7 +57,7 @@
 	</c:forEach>
 	 -->
 
-
+<body class="notLogg">
 <section class="maincontent s-color1">
     <div class="wrap">
         <div class="leftcontent">
@@ -79,7 +79,7 @@
 									value="${movie.movieDb.id}"/>
 							</s:url>
 										
-                            <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
+                            <a style="background: url(${movie.poster}) no-repeat center center" href="${movie_url}">
                                 <span class="movie-hover">
                                      <div class="desc">
                                          <h2><c:out value="${movie.movieDb.title}"/></h2>
@@ -154,3 +154,4 @@
         </div>
      </div>
 </section> 
+</body>

@@ -7,6 +7,7 @@
 .soc_login_btns .soc_login_item:before,
 .goto:after,
 .pager_nav:before,
-.btns span:after{
+.btns span:after,
+.raiting-box .star{
 	background: url('../images/sprite.png') no-repeat;
 }
