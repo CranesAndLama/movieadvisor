@@ -489,9 +489,9 @@ overflow: hidden;
     background: #F6624A;
 }
 
-.tabs_wrap{
+/*.tabs_wrap{
     overflow: hidden;
-}
+}*/
 .aligncenter{
     text-align: center;
 }
@@ -701,6 +701,7 @@ background: #0E4252;
     font-weight: bold;
     font-size: 20px;
     transition: all .3s;
+    width:100%;
 }
 .btn1:hover{
     background: #fff;
@@ -719,6 +720,7 @@ background: #0E4252;
     line-height: 38px;
     transition: all .2s;
     border-radius: 2px;
+    position: relative;
 }
 .soc_login_btns .soc_login_item:hover{
     opacity: .8;
@@ -727,7 +729,9 @@ background: #0E4252;
     content:"";
     display: inline-block;
     vertical-align: middle;
-
+	position: absolute;
+	top: 50%;
+	left: 50%;
 }
 .soc_login_btns .soc_login_item.fb{
     background: #39589b;
@@ -742,16 +746,22 @@ background: #0E4252;
     background-position:-115px -29px;
     width: 8px;
     height: 16px;
+    margin-top: -8px;
+    margin-left: -4px;
 }
 .soc_login_btns .soc_login_item.tw:before{
     background-position: -85px -29px;
     width: 20px;
     height: 16px;
+    margin-left: -10px;
+    margin-top: -8px;
 }
 .soc_login_btns .soc_login_item.gp:before{
     background-position: -136px -29px;
     width: 18px;
     height: 17px;
+    margin-left: -9px;
+    margin-top: -8.5px;
 }
 /*-------------------------------*/
 .notLogg .user_av{
@@ -1276,11 +1286,50 @@ h4 a:hover{
     border-bottom: 7px solid #16A79D;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
-    top: -7px;
+    top: -6px;
     left: 61%;
     margin-left: -7px;
 }
 .rate_popup .star:last-child{
     margin-right: 0;
 }
+/*---------allUsers---------------*/
+.friend_list.full_width .friend_item:nth-child(6n+6){
+    margin-right: 20px;
+}
+.friend_list.full_width .friend_item:nth-child(8n+8){
+    margin-right: 0px;
+}
+.friend_btn{
+    display: block;
+    font-size: 16px;
+    font-family: "raleway-regular";
+    color: #fff;
+    position: relative;
+    cursor: pointer;
+    padding: 8px 0px;
+    text-align: center;
+    margin: 15px 0;
+    border: 2px solid;
+    transition:all .2s;
+    font-weight: bold;
+}
+.friend_btn.add_friend{
+    background: #16A79D;
+    border-color: #16A79D;
+}
+.friend_btn.remove_friend{
+    background: #CF4858;
+    border-color: #CF4858;
+}
+.friend_btn:hover{
+    background: transparent;
+}
+.remove_friend.friend_btn:hover{
+    color:#CF4858 ;
+}
+.add_friend.friend_btn:hover{
+    color:#16A79D ;
+}
+
 

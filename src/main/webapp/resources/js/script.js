@@ -137,7 +137,7 @@ jQuery(document).ready(function () {
     Page.columns();
 
     jQuery('.rate').click(function(e){
-
+    	  
         jQuery(this).find('.rate_popup_wrap').toggleClass('open');
         jQuery(this).parents('.movie-item').toggleClass('open');
         Page.rating();

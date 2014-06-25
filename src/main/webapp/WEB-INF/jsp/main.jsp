@@ -91,7 +91,23 @@
                                     <div class="btns">
 
                                         <span class="del"></span>
-                                        <span class="rate"></span>
+                                        <span class="rate">
+	                                        <div class="rate_popup_wrap">
+					                            <div class="raiting-box">
+					                                <div class="star">1</div>
+					                                <div class="star">2</div>
+					                                <div class="star">3</div>
+					                                <div class="star">4</div>
+					                                <div class="star">5</div>
+					                                <div class="star">6</div>
+					                                <div class="star">7</div>
+					                                <div class="star">8</div>
+					                                <div class="star">9</div>
+					                                <div class="star">10</div>
+					                            </div>
+					                        </div>
+					                         <input type="hidden" name="rating" id="rating1" value="0">
+                                        </span>
                                         <span class="watchlist"></span>
                                     </div>
                                 </span>
@@ -132,7 +148,24 @@
                                     <div class="btns">
 
                                         <span class="del"></span>
-                                        <span class="rate"></span>
+                                        <span class="rate">
+                                        	<div class="rate_popup_wrap">
+					                            <div class="raiting-box">
+					                                <div class="star">1</div>
+					                                <div class="star">2</div>
+					                                <div class="star">3</div>
+					                                <div class="star">4</div>
+					                                <div class="star">5</div>
+					                                <div class="star">6</div>
+					                                <div class="star">7</div>
+					                                <div class="star">8</div>
+					                                <div class="star">9</div>
+					                                <div class="star">10</div>
+					                            </div>
+					                        </div>
+					                         <input type="hidden" name="rating" id="rating1" value="0">
+                                        
+                                        </span>
                                         <span class="watchlist"></span>
                                     </div>
                                 </span>
