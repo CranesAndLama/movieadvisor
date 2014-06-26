@@ -130,13 +130,9 @@
                 <ul class="movies-list">
                 	<c:forEach var="movie" items="${recommended}">
                     <li class="movie-item">
-                        
-                        	<s:url value="/movies/{movieId}"
-								var="movie_url">
-								<s:param name="movieId"
-									value="${movie.movieDb.id}"/>
-							</s:url>	
-                             
+                            <s:url value="/movies/{movieId}" var="movie_url">
+								<s:param name="movieId" value="${movie.movieDb.id}"/>
+							</s:url>
                             <a style="background: url(${movie.poster}) no-repeat center center" href="${movie_url}">
                              
                                 <span class="movie-hover">
@@ -149,6 +145,9 @@
                                      </div>
                                     <div class="btns">
 
+										<s:url value="/movieadvisor/addtowatchlist/{movieId}" var="addtowatchlist_url">
+											<s:param name="movieId" value="${movie.movieDb.id}"/>
+										</s:url>
                                         <span class="del"></span>
                                         <span class="rate">
                                         	<div class="rate_popup_wrap">
@@ -167,7 +166,7 @@
 					                        </div>
 					                         <input type="hidden" name="rating" id="rating1" value="0">
                                         </span>
-                                        <span class="watchlist"></span>
+                                        <span class="watchlist" onclick="addToWatchlist(${addtowatchlist_url_url})"></span>
                                     </div>
                                 </span>
 
@@ -195,10 +194,8 @@
                     <c:forEach var="movie" items="${newMovies}">
                        <li class="movie-item">
                         
-                        	<s:url value="/movies/{movieId}"
-								var="movie_url">
-								<s:param name="movieId"
-									value="${movie.movieDb.id}"/>
+                        	<s:url value="/movies/{movieId}" var="movie_url">
+								<s:param name="movieId" value="${movie.movieDb.id}"/>
 							</s:url>
 										
                             <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
@@ -212,6 +209,9 @@
                                      </div>
                                     <div class="btns">
 
+                                        <s:url value="/movieadvisor/addtowatchlist/{movieId}" var="addtowatchlist_url">
+											<s:param name="movieId" value="${movie.movieDb.id}"/>
+										</s:url>
                                         <span class="del"></span>
                                         <span class="rate">
                                         	<div class="rate_popup_wrap">
@@ -230,7 +230,7 @@
 					                        </div>
 					                         <input type="hidden" name="rating" id="rating1" value="0">
                                         </span>
-                                        <span class="watchlist"></span>
+                                        <span class="watchlist" onclick="addToWatchlist(${addtowatchlist_url})"></span>
                                     </div>
                                 </span>
 
@@ -252,11 +252,9 @@
                     <ul class="movies-list">
                     <c:forEach var="movie" items="${topRated}">
                         <li class="movie-item">
-                        
                         	<s:url value="/movies/{movieId}" var="movie_url">
 								<s:param name="movieId" value="${movie.movieDb.id}"/>
 							</s:url>
-										
                             <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
                                 <span class="movie-hover">
                                      <div class="desc">
@@ -268,6 +266,9 @@
                                      </div>
                                     <div class="btns">
 
+                                        <s:url value="/movieadvisor/addtowatchlist/{movieId}" var="addtowatchlist_url">
+											<s:param name="movieId" value="${movie.movieDb.id}"/>
+										</s:url>
                                         <span class="del"></span>
                                         <span class="rate">
                                         	<div class="rate_popup_wrap">
@@ -286,7 +287,7 @@
 					                        </div>
 					                         <input type="hidden" name="rating" id="rating1" value="0">
                                         </span>
-                                        <span class="watchlist"></span>
+                                        <span class="watchlist" onclick="addToWatchlist(${addtowatchlist_url})"></span>
                                     </div>
                                 </span>
 
