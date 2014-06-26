@@ -47,10 +47,27 @@
 					     <input type="hidden" name="rating" id="rating1" value="0">                    	
                     </span>
                     
-                    <s:url value="/addtowatchlist/{movieId}" var="movie_url">
+                    <s:url value="/addtowatchlist/{movieId}" var="addtowatchlist_url">
 						<s:param name="movieId" value="${movie.movieDb.id}"/>
 					</s:url>
-                    <span class="watchlist" onclick="addToWatchlist('${movie_url}')"></span>
+					<s:url value="/removefromwatchlist/{movieId}" var="removefromwatchlist_url">
+						<s:param name="movieId" value="${movie.movieDb.id}"/>
+					</s:url>
+					<c:set var="isInWatchlist" scope="session" value="${movie.isInWatchlist}"/>
+					<c:choose>
+      					<c:when test="${isInWatchlist==true}"> 
+      						<span class="watchlist inWatchlist" data-addUrl="${addtowatchlist_url}" data-removeUrl="${removefromwatchlist_url}">
+      						</span>
+      					
+      					</c:when>
+
+      					<c:otherwise>
+      						<span class="watchlist" data-addurl="${addtowatchlist_url}" data-removeurl="${removefromwatchlist_url}">      							
+      						</span>
+      					
+      					</c:otherwise>
+					</c:choose>
+                    
                     
                 </div>
             </div>
