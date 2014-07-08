@@ -5,7 +5,7 @@
 								<s:param name="movieId" value="${movie.movieDb.id}"/>
 							</s:url>
                             <a style="background: url(${movie.poster}) no-repeat center center" href="${movie_url}">
-                             
+
                                 <span class="movie-hover">
                                      <div class="desc">
                                          <h2><c:out value="${movie.movieDb.title}"/></h2>

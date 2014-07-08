@@ -774,7 +774,6 @@ display: none;
 .logged .user_av{
 	display: inline-block;
 	vertical-align: middle;
-    display: block;
     border: 2px solid #F6624A;
     width: 45px;
     height: 45px;
