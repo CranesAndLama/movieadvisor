@@ -1,5 +1,6 @@
 package movieadvisor.recommender;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -26,7 +27,7 @@ public class RecommenderEngine {
 		//dataSource.setDatabaseName("movieadvisor");
 		return dataSource;
 	}
-	public static List<RecommendedItem> makeRecommendations(Long userId) throws TasteException {
+	public static List<RecommendedItem> makeRecommendations(Long userId, int numberOfRecommendations) throws TasteException {
 		MysqlDataSource dataSource = configureDataSource();
 		JDBCDataModel dataModel = new MySQLJDBCDataModel(dataSource, "movie", "userId",
 				"movieId", "rating", null);
@@ -42,15 +43,15 @@ public class RecommenderEngine {
 		Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, userSimilarity);
 		Recommender cachingRecommender = new CachingRecommender(recommender);
 		 //10 recommendations for 1 user
-		List<RecommendedItem> recommendations = cachingRecommender.recommend(userId, 10);
+		//List<RecommendedItem> recommendations = cachingRecommender.recommend(userId, 10);
+		List<RecommendedItem> recommendations = cachingRecommender.recommend(userId, numberOfRecommendations);
 		return recommendations;
 	}
-	/*public static void main(String[] args) throws TasteException, IOException {
+	public static void main(String[] args) throws TasteException, IOException {
 		
-		
-		List<RecommendedItem> recommendations = makeRecommendations(1);
+		List<RecommendedItem> recommendations = makeRecommendations(7l, 10);
 		for (RecommendedItem recommendedItem : recommendations) {
 			System.out.println(recommendedItem);
 		}
-	}*/
+	}
 }

@@ -25,53 +25,9 @@
 		
     <div class="s_movie_header" style="background: url(${movie.backgroundPoster}) no-repeat center center">
         <div class="wrap">
-
-            <div class="movie-item" style="background: url(${movie.poster}/>) no-repeat center center">
-                <div class="btns">
-                    <span class="del"></span>
-                    <span class="rate">
-                        <div class="rate_popup_wrap">
-					      <div class="raiting-box">
-					          <div class="star">1</div>
-					          <div class="star">2</div>
-					          <div class="star">3</div>
-					          <div class="star">4</div>
-					          <div class="star">5</div>
-					          <div class="star">6</div>
-					          <div class="star">7</div>
-					          <div class="star">8</div>
-					          <div class="star">9</div>
-					          <div class="star">10</div>
-					       </div>
-					     </div>
-					     <input type="hidden" name="rating" id="rating1" value="0">                    	
-                    </span>
-                    
-                    <s:url value="/addtowatchlist/{movieId}" var="addtowatchlist_url">
-						<s:param name="movieId" value="${movie.movieDb.id}"/>
-					</s:url>
-					<s:url value="/removefromwatchlist/{movieId}" var="removefromwatchlist_url">
-						<s:param name="movieId" value="${movie.movieDb.id}"/>
-					</s:url>
-					<c:set var="isInWatchlist" scope="session" value="${movie.isInWatchlist}"/>
-					<c:choose>
-      					<c:when test="${isInWatchlist==true}"> 
-      						<span class="watchlist inWatchlist" data-addUrl="${addtowatchlist_url}" data-removeUrl="${removefromwatchlist_url}">
-      						</span>
-      					
-      					</c:when>
-
-      					<c:otherwise>
-      						<span class="watchlist" data-addurl="${addtowatchlist_url}" data-removeurl="${removefromwatchlist_url}">      							
-      						</span>
-      					
-      					</c:otherwise>
-					</c:choose>
-                    
-                    
-                </div>
-            </div>
-
+ 			<div class="movie-item" style="background: url(${movie.poster}/>) no-repeat center center">
+          	  <%@ include file="movieMenu.jsp" %>
+          	  </div>
             <div class="movie_desc">
                 <h3><c:out value="${movie.movieDb.title}"/></h3>
 				 
@@ -92,8 +48,9 @@
                 <p><strong>Release Date: <c:out value="${movie.movieDb.releaseDate}"/></strong>
 
                 <p>${movie.movieDb.overview}</p>
-            </div>
-
+      
+            
+		</div>
         </div>
     </div>
     <div class="wrap">

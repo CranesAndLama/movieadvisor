@@ -61,7 +61,7 @@ public class Scripts {
 			System.out.println(personCrew.getName());
 		}
 		
-		MovieImages images = movies.getImages(240, "en");
+		/*MovieImages images = movies.getImages(240, "en");
 		System.out.println(images.getId());
 		List<Artwork> backdrops = images.getBackdrops();
 		List<Artwork> posters = images.getPosters();
@@ -74,16 +74,16 @@ public class Scripts {
 			System.out.println(poster.getFilePath());
 			System.out.println("POSTER: " + poster);
 		}
-		/*for (Artwork profile: profiles) {
+*/		/*for (Artwork profile: profiles) {
 			System.out.println("PROFILES: " + profiles);
 		}*/
 		
-		System.out.println(credits);
+		/*System.out.println(credits);
 		//movie.getCredits()
 		System.out.println(movie.getReleaseDate());		
 		System.out.println(movie.getGenres());
 	
-		System.out.println(movie.getOverview());
+		System.out.println(movie.getOverview());*/
 		
 		
 		/*ResultsPage<MovieDb> moviesResults = movies.getTopRatedMovies("english", 0);

@@ -40,7 +40,7 @@
         <a class="logo" href="/movieadvisor/main">Logo</a>
         <ul class="main_nav">
             <li class="color1"><a href="">Watchlist</a></li>
-            <li class="color2"><a href="">Recommendations</a></li>
+            <li class="color2"><a href="/movieadvisor/recommendations?page=1">Recommendations</a></li>
             
             <li class="color3"><a href="/movieadvisor/user/${loginUser.username}">Account</a></li>
             

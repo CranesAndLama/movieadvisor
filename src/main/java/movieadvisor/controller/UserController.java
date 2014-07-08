@@ -1,14 +1,15 @@
 package movieadvisor.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import movieadvisor.helper.ImageProcessor;
 import movieadvisor.model.Friend;
 import movieadvisor.model.Movie;
+import movieadvisor.model.PageMovie;
 import movieadvisor.model.User;
 import movieadvisor.service.FriendService;
 import movieadvisor.service.MovieService;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -132,5 +132,24 @@ public class UserController {
 		User loginUser = (User)session.getAttribute("loginUser");
 		friendService.addFriend(loginUser, friendId);
 		return "redirect:/user/users";
+	}
+	
+	@RequestMapping(value="recommendations", params = {"page"}, method=RequestMethod.GET)
+	public String getUserRecommendations(@RequestParam("page") int page, Model model, HttpSession session) throws TasteException {
+		System.out.println("RECOMENDATION CONTROLLER");
+		User loginUser = (User) session.getAttribute("loginUser");
+		
+		//Map<String, Object> rec = movieService.getRecommendations(loginUser.getUserId(), page);
+		PageMovie recommendations = movieService.getRecommendations(loginUser.getUserId(), page);
+		model.addAttribute("recommended", recommendations.getMovies());
+		model.addAttribute("noOfPages", recommendations.getNumberOfPages());
+		/*for (Movie movie:rec) {
+			System.out.println(movie.getMovieDb().getTitle());
+		}*/
+		
+		//model.addAttribute("recommended", (List<Movie>)rec.get("resultList"));
+		model.addAttribute("currentPage", page);
+		//model.addAttribute("noOfPages", (Integer)rec.get("numberOfPages"));
+		return "recommended";
 	}
 }

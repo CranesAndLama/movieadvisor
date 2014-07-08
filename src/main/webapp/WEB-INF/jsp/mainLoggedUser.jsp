@@ -129,53 +129,7 @@
                 <h3><a href="">Recommended</a></h3>
                 <ul class="movies-list">
                 	<c:forEach var="movie" items="${recommended}">
-                    <li class="movie-item">
-                            <s:url value="/movies/{movieId}" var="movie_url">
-								<s:param name="movieId" value="${movie.movieDb.id}"/>
-							</s:url>
-                            <a style="background: url(${movie.poster}) no-repeat center center" href="${movie_url}">
-                             
-                                <span class="movie-hover">
-                                     <div class="desc">
-                                         <h2><c:out value="${movie.movieDb.title}"/></h2>
-
-                                         <p>Average rating: <c:out value="${movie.movieDb.voteAverage}"/></p>
-										 <p>Release Date: <c:out value="${movie.movieDb.releaseDate}"/></p>
-										 
-                                     </div>
-                                    <div class="btns">
-
-										<s:url value="/movieadvisor/addtowatchlist/{movieId}" var="addtowatchlist_url">
-											<s:param name="movieId" value="${movie.movieDb.id}"/>
-										</s:url>
-                                        <span class="del"></span>
-                                        <span class="rate">
-                                        	<div class="rate_popup_wrap">
-					                            <div class="raiting-box">
-					                                <div class="star">1</div>
-					                                <div class="star">2</div>
-					                                <div class="star">3</div>
-					                                <div class="star">4</div>
-					                                <div class="star">5</div>
-					                                <div class="star">6</div>
-					                                <div class="star">7</div>
-					                                <div class="star">8</div>
-					                                <div class="star">9</div>
-					                                <div class="star">10</div>
-					                            </div>
-					                        </div>
-					                         <input type="hidden" name="rating" id="rating1" value="0">
-                                        </span>
-                                        <span class="watchlist" onclick="addToWatchlist(${addtowatchlist_url_url})"></span>
-                                    </div>
-                                </span>
-
-                                <h2 class="movie-title">
-                                    <span><c:out value="${movie.movieDb.title}"/></span>
-                                </h2>
-                            </a>
-                        </li>
-                    
+						<%@ include file="movieItem.jsp" %>
                     </c:forEach>
                 </ul>
                 <div class="aligncenter">
@@ -192,54 +146,8 @@
                 <div class="tab-content" id="newMovies">
                     <ul class="movies-list">
                     <c:forEach var="movie" items="${newMovies}">
-                       <li class="movie-item">
-                        
-                        	<s:url value="/movies/{movieId}" var="movie_url">
-								<s:param name="movieId" value="${movie.movieDb.id}"/>
-							</s:url>
-										
-                            <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
-                                <span class="movie-hover">
-                                     <div class="desc">
-                                         <h2><c:out value="${movie.movieDb.title}"/></h2>
-
-                                         <p>Average rating: <c:out value="${movie.movieDb.voteAverage}"/></p>
-										 <p>Release Date: <c:out value="${movie.movieDb.releaseDate}"/></p>
-										 
-                                     </div>
-                                    <div class="btns">
-
-                                        <s:url value="/movieadvisor/addtowatchlist/{movieId}" var="addtowatchlist_url">
-											<s:param name="movieId" value="${movie.movieDb.id}"/>
-										</s:url>
-                                        <span class="del"></span>
-                                        <span class="rate">
-                                        	<div class="rate_popup_wrap">
-					                            <div class="raiting-box">
-					                                <div class="star">1</div>
-					                                <div class="star">2</div>
-					                                <div class="star">3</div>
-					                                <div class="star">4</div>
-					                                <div class="star">5</div>
-					                                <div class="star">6</div>
-					                                <div class="star">7</div>
-					                                <div class="star">8</div>
-					                                <div class="star">9</div>
-					                                <div class="star">10</div>
-					                            </div>
-					                        </div>
-					                         <input type="hidden" name="rating" id="rating1" value="0">
-                                        </span>
-                                        <span class="watchlist" onclick="addToWatchlist(${addtowatchlist_url})"></span>
-                                    </div>
-                                </span>
-
-                                <h2 class="movie-title">
-                                    <span><c:out value="${movie.movieDb.title}"/></span>
-                                </h2>
-                            </a>
-                        </li>
-                        </c:forEach>
+                      <%@ include file="movieItem.jsp" %>
+                    </c:forEach>
 
                     </ul>
                     <div class="aligncenter">
@@ -251,52 +159,8 @@
                 <div class="tab-content" id="top250">
                     <ul class="movies-list">
                     <c:forEach var="movie" items="${topRated}">
-                        <li class="movie-item">
-                        	<s:url value="/movies/{movieId}" var="movie_url">
-								<s:param name="movieId" value="${movie.movieDb.id}"/>
-							</s:url>
-                            <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
-                                <span class="movie-hover">
-                                     <div class="desc">
-                                         <h2><c:out value="${movie.movieDb.title}"/></h2>
-
-                                         <p>Average rating: <c:out value="${movie.movieDb.voteAverage}"/></p>
-										 <p>Release Date: <c:out value="${movie.movieDb.releaseDate}"/></p>
-										 
-                                     </div>
-                                    <div class="btns">
-
-                                        <s:url value="/movieadvisor/addtowatchlist/{movieId}" var="addtowatchlist_url">
-											<s:param name="movieId" value="${movie.movieDb.id}"/>
-										</s:url>
-                                        <span class="del"></span>
-                                        <span class="rate">
-                                        	<div class="rate_popup_wrap">
-					                            <div class="raiting-box">
-					                                <div class="star">1</div>
-					                                <div class="star">2</div>
-					                                <div class="star">3</div>
-					                                <div class="star">4</div>
-					                                <div class="star">5</div>
-					                                <div class="star">6</div>
-					                                <div class="star">7</div>
-					                                <div class="star">8</div>
-					                                <div class="star">9</div>
-					                                <div class="star">10</div>
-					                            </div>
-					                        </div>
-					                         <input type="hidden" name="rating" id="rating1" value="0">
-                                        </span>
-                                        <span class="watchlist" onclick="addToWatchlist(${addtowatchlist_url})"></span>
-                                    </div>
-                                </span>
-
-                                <h2 class="movie-title">
-                                    <span><c:out value="${movie.movieDb.title}"/></span>
-                                </h2>
-                            </a>
-                        </li>
-                        </c:forEach>
+                    	<%@ include file="movieItem.jsp" %>    
+                    </c:forEach>
                         
                     </ul>
                     <div class="aligncenter">
@@ -313,38 +177,7 @@
                 <h3><a href="">Watchlist</a></h3>
                 <ul class="movies-list">
                 <c:forEach var="movie" items="${watchlist}">
-                    <li class="movie-item">
-                    	<s:url value="/movies/{movieId}" var="movie_url">
-							<s:param name="movieId" value="${movie.movieDb.id}"/>
-						</s:url>
-                        <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
-
-                            <h2 class="movie-title">
-                                <span><c:out value="${movie.movieDb.title}"/></span>
-                            </h2>
-                            <div class="btns">
-
-                                <span class="rate">
-                                	<div class="rate_popup_wrap">
-					                            <div class="raiting-box">
-					                                <div class="star">1</div>
-					                                <div class="star">2</div>
-					                                <div class="star">3</div>
-					                                <div class="star">4</div>
-					                                <div class="star">5</div>
-					                                <div class="star">6</div>
-					                                <div class="star">7</div>
-					                                <div class="star">8</div>
-					                                <div class="star">9</div>
-					                                <div class="star">10</div>
-					                            </div>
-					                        </div>
-					                         <input type="hidden" name="rating" id="rating1" value="0">
-                                </span>
-                                <span class="watchlist inWatchlist"></span>
-                            </div>
-                        </a>
-                    </li>
+                   <%@ include file="watchlistItem.jsp" %>
                 </c:forEach>
 
                     </ul>

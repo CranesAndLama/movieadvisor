@@ -18,12 +18,11 @@ import java.util.List;
 import java.util.Random;
 
 import movieadvisor.model.Movie;
+import movieadvisor.model.PageMovie;
 import movieadvisor.model.User;
 import movieadvisor.recommender.RecommenderEngine;
 import movieadvisor.repository.MovieRepository;
 //import movieadvisor.repository.WatchlistRepository;
-
-
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
@@ -31,9 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service("movieService")
 public class MovieServiceImpl implements MovieService{
-	
+	public static final int NUMBER_OF_RECOMMENDATIONS_PER_PAGE = 12;
 	@Autowired
 	MovieRepository movieRepository;
 	/*@Autowired
@@ -51,11 +51,23 @@ public class MovieServiceImpl implements MovieService{
 		
 		//set first three cast person
 		List<PersonCast> cast = credits.getCast();
-		List<PersonCast> firstThreeStars = cast.subList(0, 3);
+		
+		List<PersonCast> firstThreeStars = cast.size() > 3? cast.subList(0, 3): cast;
 		credits.setCast(firstThreeStars);
 		//set director and producer
 		List<PersonCrew> crew = credits.getCrew();
-		List<PersonCrew> dirAndProd = crew.subList(0, 2);
+		List<PersonCrew> dirAndProd = new ArrayList<PersonCrew>();
+		//List<PersonCrew> producers = new ArrayList<PersonCrew>();
+		for (PersonCrew personCrew: crew) {
+			if (personCrew.getJob().equals("Director")) {
+				dirAndProd.add(personCrew);
+			}
+			else if (personCrew.getJob().equals("Producer")) {
+				dirAndProd.add(personCrew);
+			}
+		}
+		
+		//<PersonCrew> dirAndProd = crew.subList(0, 2);
 		credits.setCrew(dirAndProd);
 		
 		movieDb.setCredits(credits);
@@ -63,7 +75,7 @@ public class MovieServiceImpl implements MovieService{
 		//set background image
 		MovieImages images = movies.getImages(movieId, "en");
 		List<Artwork> posters = images.getPosters();
-		List<Artwork> firstPoster = posters.subList(0, 1);
+		List<Artwork> firstPoster = posters.size() == 0? posters: posters.subList(0, 1);
 		images.setPosters(firstPoster);
 		
 		movieDb.setImages(images);
@@ -82,11 +94,21 @@ public class MovieServiceImpl implements MovieService{
 		
 		//set first three cast person
 		List<PersonCast> cast = credits.getCast();
-		List<PersonCast> firstThreeStars = cast.subList(0, 3);
+		List<PersonCast> firstThreeStars = cast.size() > 3? cast.subList(0, 3): cast;
 		credits.setCast(firstThreeStars);
 		//set director and producer
 		List<PersonCrew> crew = credits.getCrew();
-		List<PersonCrew> dirAndProd = crew.subList(0, 2);
+		List<PersonCrew> dirAndProd = new ArrayList<PersonCrew>();
+		//List<PersonCrew> producers = new ArrayList<PersonCrew>();
+		for (PersonCrew personCrew: crew) {
+			if (personCrew.getJob().equals("Director")) {
+				dirAndProd.add(personCrew);
+			}
+			else if (personCrew.getJob().equals("Producer")) {
+				dirAndProd.add(personCrew);
+			}
+		}
+
 		credits.setCrew(dirAndProd);
 		
 		movieDb.setCredits(credits);
@@ -94,8 +116,14 @@ public class MovieServiceImpl implements MovieService{
 		//set background image
 		MovieImages images = movies.getImages(i, "en");
 		List<Artwork> posters = images.getPosters();
-		String backgroundPosterFilePath = posters.get(1).getFilePath();
-		
+		if (posters.size() > 1) {
+			String backgroundPosterFilePath = posters.get(1).getFilePath();
+			movie.setBackgroundPoster(Movie.POSTER_BASE_URL + backgroundPosterFilePath);
+		}
+		else if (posters.size() == 1) {
+			String backgroundPosterFilePath = posters.get(0).getFilePath();
+			movie.setBackgroundPoster(Movie.POSTER_BASE_URL + backgroundPosterFilePath);
+		}
 		/*List<Artwork> firstPoster = posters.subList(0, 1);
 		images.setPosters(firstPoster);
 		
@@ -103,7 +131,7 @@ public class MovieServiceImpl implements MovieService{
 
 		movie.setMovieDb(movieDb);
 		movie.setPoster(Movie.POSTER_BASE_URL + movieDb.getPosterPath());
-		movie.setBackgroundPoster(Movie.POSTER_BASE_URL + backgroundPosterFilePath);
+		
 	}
 	public Movie getMovieFromDb(Long movieId, Long userId) {
 		Movie movieDb = movieRepository.getMovie(movieId, userId);
@@ -321,18 +349,48 @@ public class MovieServiceImpl implements MovieService{
 		}
 		return movies;
 	}
-	public List<Movie> getRecommendations(Long userId) throws TasteException {
+	
+	public PageMovie getRecommendations(Long userId, int page) throws TasteException {
 		List<Movie> resultList = new ArrayList<Movie>();
-		List<RecommendedItem> recommendations = RecommenderEngine.makeRecommendations(userId);
 		
-		for (RecommendedItem recommendedItem : recommendations) {
+		List<RecommendedItem> recommendations = RecommenderEngine.makeRecommendations(userId, page * NUMBER_OF_RECOMMENDATIONS_PER_PAGE);
+		
+		int numberOfItems = recommendations.size();
+		int from = (page - 1) * NUMBER_OF_RECOMMENDATIONS_PER_PAGE;
+		for (int i = from; i < numberOfItems; i++) {
+			System.out.println(recommendations.get(i));
+			Long movieId = recommendations.get(i).getItemID();
+			Movie movie = getMovieFromDb(movieId, userId);
+			resultList.add(movie);
+		}
+		int numberOfPages = numberOfItems / NUMBER_OF_RECOMMENDATIONS_PER_PAGE + 1;
+		PageMovie returnPage = new PageMovie(resultList, numberOfPages);
+		/*for (RecommendedItem recommendedItem : recommendations) {
 			System.out.println(recommendedItem);
 			Long movieId = recommendedItem.getItemID();
 			Movie movie = getMovieFromDb(movieId, userId);
-			resultList.add(movie);
-		}			
-		return resultList;
+			resultList.add(movie);	
+		}*/
+		
+		/*System.out.println("Recommendation list: Service layout : ");
+		for (Movie movie: resultList) {
+			System.out.println(movie.getMovieDb().getTitle());
+		}
+		
+		int numberOfPages = numberOfItems / NUMBER_OF_RECOMMENDATIONS_PER_PAGE + 1;
+		System.out.println("Pages of recommendations: " + numberOfPages);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("resultList", resultList);
+		resultMap.put("numberOfPages", numberOfPages);*/
+		
+		/*System.out.println("Recommendation list: Service layout after put: ");
+		for (Movie movie: (List<Movie>)resultMap.get("resultList")) {
+			System.out.println(movie.getMovieDb().getTitle());
+		}*/
+		
+		return returnPage;
 	}
+
 	public List<Movie> getNewMovies(Integer page, Integer from, Integer to) {
 		TmdbMovies movies = tmdbApi.getMovies();
 		ResultsPage<MovieDb> moviesResults = movies.getNowPlayingMovies("english", page);

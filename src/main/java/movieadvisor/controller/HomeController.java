@@ -6,16 +6,15 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import movieadvisor.model.Movie;
+import movieadvisor.model.PageMovie;
 import movieadvisor.model.User;
 import movieadvisor.service.MovieService;
 /*import movieadvisor.service.WatchlistService;*/
-
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -74,7 +73,17 @@ public class HomeController {
 		model.addAttribute("greeting", helloToUser);
 		model.addAttribute("loginUser", loginUser);
 		
-		model.addAttribute("recommended", movieService.getRecommendations(loginUser.getUserId()));
+		//Map<String, Object> recommendations = movieService.getRecommendations(loginUser.getUserId(), 1);
+		//List<Movie> recommendationsList = (List<Movie>)recommendations.get("returnList");
+		
+		/*System.out.println("Recommendation list:");
+		//System.out.println("Number of pages: " + (Integer)recommendations.get("numberOfPages"));
+		for (Movie movie: recommendationsList) {
+			System.out.println(movie.getMovieDb().getTitle());
+		}
+		*/
+		PageMovie recommendations = movieService.getRecommendations(loginUser.getUserId(), 1);
+		model.addAttribute("recommended", recommendations.getMovies());
 		model.addAttribute("topRated", movieService.getTopRatedFromDb(loginUser));
 		model.addAttribute("newMovies", movieService.getNewMoviesFromDb(loginUser));
 		

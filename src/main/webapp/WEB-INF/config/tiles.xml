@@ -38,5 +38,9 @@
         <put-attribute name="title" value="All Users" />
         <put-attribute name="body" value="/WEB-INF/jsp/allUsers.jsp" />
     </definition>
+    <definition name="recommended" extends="base.definition">
+        <put-attribute name="title" value="Recommendations" />
+        <put-attribute name="body" value="/WEB-INF/jsp/recommended.jsp" />
+    </definition>
  
 </tiles-definitions>

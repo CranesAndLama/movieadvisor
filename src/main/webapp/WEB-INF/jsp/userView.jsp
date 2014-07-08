@@ -190,32 +190,8 @@
     <div class="small_section main_section">
         <h4><a href="">Recently viewed</a></h4>
         <ul class="movies-list">
-        	<c:forEach var="recentlyViewedMovie" items="${recentlyViewedMovies}">
-            <li class="movie-item">
-            	<s:url value="/movies/{movieId}" var="movie_url">
-					<s:param name="movieId" value="${recentlyViewedMovie.movieDb.id}"/>
-				</s:url>
-                <a style="background: url('${recentlyViewedMovie.poster}') no-repeat center center" href="${movie_url}">
-                                <span class="movie-hover">
-                                     <div class="desc">
-                                         <h2>${recentlyViewedMovie.movieDb.title}</h2>
-
-                                         <p>Average rating: <c:out value="${recentlyViewedMovie.movieDb.voteAverage}"/></p>
-										 <p>Release Date: <c:out value="${recentlyViewedMovie.movieDb.releaseDate}"/></p>
-                                     </div>
-                                    <div class="btns">
-
-                                        <span class="del"></span>
-                                        <span class="rate"></span>
-                                        <span class="watchlist"></span>
-                                    </div>
-                                </span>
-
-                    <h2 class="movie-title">
-                        <span>${recentlyViewedMovie.movieDb.title}</span>
-                    </h2>
-                </a>
-            </li>
+        	<c:forEach var="movie" items="${recentlyViewedMovies}">
+            	 <%@ include file="movieItem.jsp" %>
             </c:forEach>
             
         </ul>
@@ -232,22 +208,7 @@
         <h3><a href="">Watchlist</a></h3>
         <ul class="movies-list">
         <c:forEach var="movie" items="${watchlist}">
-            <li class="movie-item">
-            <s:url value="/movies/{movieId}" var="movie_url">
-				<s:param name="movieId" value="${movie.movieDb.id}"/>
-			</s:url>
-                <a style="background: url('${movie.poster}') no-repeat center center" href="${movie_url}">
-
-                    <h2 class="movie-title">
-                        <span>${movie.movieDb.title}</span>
-                    </h2>
-                    <div class="btns">
-
-                        <span class="rate"></span>
-                        <span class="watchlist inWatchlist"></span>
-                    </div>
-                </a>
-            </li>
+            <%@ include file="watchlistItem.jsp" %>
         </c:forEach>
         </ul>
         <a class="goto" href="">Go to watchlist</a>

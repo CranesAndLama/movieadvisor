@@ -141,9 +141,59 @@ jQuery(document).ready(function () {
         jQuery(this).find('.rate_popup_wrap').toggleClass('open');
         jQuery(this).parents('.movie-item').toggleClass('open');
         Page.rating();
-        e.preventDefault();
+        
+    		//event.preventDefault();
+    		
+    		 var rating = $(this).parent().find('.rate_movie').val();
+    		 var urlValue = $(this).parent().find('.rate_movie').data("url");
+    		console.log(rating);
+    		console.log(urlValue);
+    		 
+    		//var ratingResponce =  $(this).closest('li').find('.rating');
+    		
+    		//console.log('0: ', ratingResponce.html());
+    		 //var urlValue = $("#ratedUrl").val();
+    		 $.ajax({
+    			url: urlValue,
+    			//url: $("#rateMovieForm").attr("action"),
+    			data: {rating: rating},
+    			type: "POST",
+    	        }).done (function(responce) {
+    	        	
+    	    	   
+    	    	}).fail (function(err) {
+    	    	   console.error(err);
+    	    	});
+    		 e.preventDefault();
+    		});
+        
     });
 
 
-
-});
+/*$(document).ready(function() {
+		
+		$('.rate_movie').change(function(event) {
+		//event.preventDefault();
+		
+		 var rating = $(this).val();
+		 var urlValue = $(this).data("url");
+		console.log(rating);
+		console.log(urlValue);
+		 
+		//var ratingResponce =  $(this).closest('li').find('.rating');
+		
+		console.log('0: ', ratingResponce.html());
+		 //var urlValue = $("#ratedUrl").val();
+		 $.ajax({
+			url: urlValue,
+			//url: $("#rateMovieForm").attr("action"),
+			data: {rating: rating},
+			type: "POST",
+	        }).done (function(responce) {
+	        	
+	    	   
+	    	}).fail (function(err) {
+	    	   console.error(err);
+	    	});
+		});
+	});*/
