@@ -73,7 +73,10 @@
 					</a>
 					 -->
       				<a class="user_av" style="background: url('/movieadvisor/resources/img/${loginUser.userId}.jpg') no-repeat center center" href="${user_url}"></a>
-      			</c:otherwise>
+                    <div class="logout-btn" data-hover="Logout">
+                      <span>Logout</span>
+                    </div>
+                </c:otherwise>
 			</c:choose>
             
         </div>
