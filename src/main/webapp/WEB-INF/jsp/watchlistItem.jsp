@@ -1,4 +1,4 @@
-					 <li class="movie-item">
+					 <li class="movie-item sidebar_movie-item">
                     	<s:url value="/movies/{movieId}" var="movie_url">
 							<s:param name="movieId" value="${movie.movieDb.id}"/>
 						</s:url>

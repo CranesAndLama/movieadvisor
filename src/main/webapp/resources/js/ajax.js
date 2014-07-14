@@ -61,11 +61,11 @@ $(document).ready(function() {
 		               type: "GET"
 		       }).done (function(responce) {
 		               watchlistResponce.removeClass('inWatchlist');
-//                    var m_item = watchlistResponce.parents('.movie-item');
-//
-//                    if(m_item.closest('.sidebar')){
-//                        m_item.remove();
-//                    }
+                    var m_item = watchlistResponce.parents('.movie-item');
+
+                    if(m_item.hasClass('sidebar_movie-item')){
+                        m_item.remove();
+                    }
 
 		       }).fail (function(err) {
 		              console.error(err);
