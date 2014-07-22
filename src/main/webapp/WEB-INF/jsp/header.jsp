@@ -35,6 +35,9 @@
 
 </head>
 
+
+
+
 <header class="main_head">
     <div class="wrap">
         <a class="logo" href="/movieadvisor/main">Logo</a>
@@ -46,7 +49,7 @@
             
         </ul>
         <div class="fl-r">
-            <form class="search_wrap">
+            <form class="search_wrap" >
                 <input type="text" placeholder="Search" class="search_inp" id="search_inp"/>
                 <button class="search_icon"></button>
             </form>

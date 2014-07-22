@@ -79,10 +79,51 @@
                     <div class="soc_login">
                         <h3>SignIn Socials</h3>
                         <div class="soc_login_btns">
-                            <a class="soc_login_item fb" href=""></a>
+                            <a id="fb_log" class="soc_login_item fb" href="#"></a>
                             <a class="soc_login_item tw" href=""></a>
                             <a class="soc_login_item gp" href=""></a>
                         </div>
+                      <div id="fb-root"></div>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <script>
+    // initialize the library with the API key
+    FB.init({ appId  : '1450671295187324' });
+
+    // fetch the status on load
+    FB.getLoginStatus(handleSessionResponse);
+
+    jQuery('#fb_log').bind('click', function() {
+      FB.login(handleSessionResponse);
+    });
+
+  
+    // no user, clear display
+    function clearDisplay() {
+    	jQuery('.user_av').hide('fast');
+    }
+
+    // handle a session response from any of the auth related calls
+    function handleSessionResponse(response) {
+      // if we dont have a session, just hide the user info
+      if (!response.session) {
+        clearDisplay();
+        return;
+      }
+
+      // if we have a session, query for the user's profile picture and name
+      FB.api(
+        {
+          method: 'fql.query',
+          query: 'SELECT name, pic FROM profile WHERE id=' + FB.getSession().uid
+        },
+        function(response) {
+          var user = response[0];
+         jQuery('.notLogg').addClass('logged').removeClass('notLogg');
+         jQuery('.user_av').html('<img src="' + user.pic + '">' + user.name).show('fast');
+        }
+      );
+    }
+  </script>
                     </div>
                 </div>
             </div>

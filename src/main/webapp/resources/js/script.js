@@ -25,6 +25,7 @@ var Page = {
                 jQuery('body').addClass('open_search');
                 console.log('click');
                 jQuery('#search-form').submit();
+               
 
             }
             else {
