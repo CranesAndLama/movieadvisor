@@ -26,7 +26,12 @@
 					                        </div>
 					                         <input type="hidden" name="rating" id="rating1" value="0">
                                 </span>
-                                <span class="watchlist inWatchlist"></span>
+                                <s:url value="/removefromwatchlist/{movieId}" var="removefromwatchlist_url">
+									<s:param name="movieId" value="${movie.movieDb.id}"/>
+								</s:url>
+								
+                                <span class="watchlist inWatchlist" data-removeUrl="${removefromwatchlist_url}">
+                                </span>
                             </div>
                         </a>
                     </li>

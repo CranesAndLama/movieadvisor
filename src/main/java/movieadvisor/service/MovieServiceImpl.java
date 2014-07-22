@@ -2,10 +2,12 @@ package movieadvisor.service;
 
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbMovies;
+import info.movito.themoviedbapi.TmdbSearch;
 import info.movito.themoviedbapi.model.Artwork;
 import info.movito.themoviedbapi.model.Credits;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.MovieImages;
+import info.movito.themoviedbapi.model.core.MovieResults;
 import info.movito.themoviedbapi.model.core.ResultsPage;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.people.PersonCrew;
@@ -23,6 +25,8 @@ import movieadvisor.model.User;
 import movieadvisor.recommender.RecommenderEngine;
 import movieadvisor.repository.MovieRepository;
 //import movieadvisor.repository.WatchlistRepository;
+
+
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
@@ -427,6 +431,7 @@ public class MovieServiceImpl implements MovieService{
 	}
 	private List<Movie> checkAndFormMovieObjects(List<MovieDb> resultList, User user) {
 		List<Movie> resultMovieList = new ArrayList<Movie>();
+		if (resultList.isEmpty()) return resultMovieList;
 		resultList.sort(null);
 		List<Movie> userMovies = movieRepository.getAllUserMovies(user.getUserId());
 		userMovies.sort(null);
@@ -481,6 +486,16 @@ public class MovieServiceImpl implements MovieService{
 			}
 		}
 		return resultMovieList;
+	}
+	public PageMovie searchMovies(String query, User user, Integer page) {
+		TmdbApi tmdbApi = new TmdbApi(API_KEY);
+	 	TmdbSearch search = tmdbApi.getSearch();
+	 	MovieResults results = search.searchMovie(query, 0, null, true, page);
+	 	int numOfPages = results.getTotalPages();
+	 	List<MovieDb> movies= results.getResults();
+	 	List<Movie> resultMovies = checkAndFormMovieObjects(movies, user);
+	 	PageMovie resultPage = new PageMovie(resultMovies, numOfPages);
+		return resultPage;
 	}
 	
 	/*	public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package movieadvisor.controller;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +10,6 @@ import movieadvisor.model.Friend;
 import movieadvisor.model.Movie;
 import movieadvisor.model.PageMovie;
 import movieadvisor.model.User;
-import movieadvisor.service.FriendService;
 import movieadvisor.service.MovieService;
 import movieadvisor.service.UserService;
 
@@ -35,8 +33,7 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private MovieService movieService;
-	@Autowired
-	private FriendService friendService;
+	
 	
 	@RequestMapping(value = "user/login", method = RequestMethod.GET)
 	public String showUserLoginForm(Model model) {
@@ -127,12 +124,7 @@ public class UserController {
 		model.addAttribute("loginUser", loginUser);
 		return "allUsers";
 	}
-	@RequestMapping(value="addfriend/{friendId}", method=RequestMethod.GET)
-	public String addFriend(final @PathVariable Long friendId, HttpSession session) {
-		User loginUser = (User)session.getAttribute("loginUser");
-		friendService.addFriend(loginUser, friendId);
-		return "redirect:/user/users";
-	}
+	
 	
 	@RequestMapping(value="recommendations", params = {"page"}, method=RequestMethod.GET)
 	public String getUserRecommendations(@RequestParam("page") int page, Model model, HttpSession session) throws TasteException {

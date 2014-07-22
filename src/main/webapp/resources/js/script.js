@@ -18,14 +18,14 @@ var Page = {
     searchInput: function () {
         jQuery('.search_icon').click(function (e) {
             e.preventDefault();
-            jQuery('#search_inp').focus();
-            if (jQuery('#search_inp').val()) {
+            jQuery('#query').focus();
+            if (jQuery('#query').val()) {
                 jQuery('.search_inp').addClass('open_search');
                 jQuery('.search_icon').addClass('open_search');
                 jQuery('body').addClass('open_search');
                 console.log('click');
-                jQuery('#search-form').submit();
-               
+                jQuery('.search_wrap').submit();
+
 
             }
             else {
@@ -33,7 +33,7 @@ var Page = {
                 jQuery('.search_icon').toggleClass('open_search');
                 jQuery('.search_inp').toggleClass('open_search');
                 jQuery('body').toggleClass('open_search');
-                jQuery('#search_inp').focus();
+                jQuery('#query').focus();
             }
         });
 
@@ -48,6 +48,8 @@ var Page = {
             return false;
         });
     },
+    
+    
     openLoginForm: function (a) {
         jQuery(a).addClass('active').addClass('open');
     },

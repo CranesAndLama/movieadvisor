@@ -23,7 +23,7 @@ public class RecommenderEngine {
 		dataSource.setURL("jdbc:mysql://localhost:3306/movieadvisor");
 		//dataSource.setServerName("localhost:3306/");
 		dataSource.setUser("root");
-		dataSource.setPassword("");
+		dataSource.setPassword("root");
 		//dataSource.setDatabaseName("movieadvisor");
 		return dataSource;
 	}

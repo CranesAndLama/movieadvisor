@@ -8,4 +8,6 @@ public interface FriendRepository {
 
 	void saveFriend(Friend friend);
 
+	void removeFriend(Friend friendDb);
+
 }

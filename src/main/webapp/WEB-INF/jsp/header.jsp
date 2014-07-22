@@ -21,6 +21,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!doctype html>
 <html>
 <head>
@@ -49,8 +50,21 @@
             
         </ul>
         <div class="fl-r">
+
+
+
+
+
+
+
+
             <form class="search_wrap" >
                 <input type="text" placeholder="Search" class="search_inp" id="search_inp"/>
+
+        	
+            <form class="search_wrap" method="POST" action="/movieadvisor/search?page=1">
+                <input type="text" placeholder="Search" class="search_inp" name="query" id="query"/>
+
                 <button class="search_icon"></button>
             </form>
             
@@ -70,15 +84,14 @@
       				<s:url value="/user/{username}" var="user_url">
 								<s:param name="username" value="${loginUser.username}"/>
 					</s:url>
-					<!-- 
-      				 <a class="user_av" href="${user_url}">
-   						<img src="/movieadvisor/resources/img/${loginUser.userId}.jpg" />
-					</a>
-					 -->
-      				<a class="user_av" style="background: url('/movieadvisor/resources/img/${loginUser.userId}.jpg') no-repeat center center" href="${user_url}"></a>
-                    <div class="logout-btn" data-hover="Logout">
+					
+					 <s:url value="/resources/img/{userId}.jpg" var="background_image">
+						<s:param name="userId" value="${loginUser.userId}"/>
+					</s:url>
+      				<a class="user_av" style="background: url('${background_image}') no-repeat center center" href="${user_url}"></a>
+                    <a class="logout-btn" data-hover="Logout" href="/movieadvisor/logout">
                       <span>Logout</span>
-                    </div>
+                    </a>
                 </c:otherwise>
 			</c:choose>
             

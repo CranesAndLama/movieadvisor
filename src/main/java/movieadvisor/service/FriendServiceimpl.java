@@ -30,5 +30,11 @@ public class FriendServiceimpl implements FriendService{
 		}
 		
 	}
+	@Transactional
+	public void removeFriend(User loginUser, Long friendId) {
+		Friend friendDb = friendRepository.getFriend(friendId, loginUser.getUserId());
+		friendRepository.removeFriend(friendDb);
+		
+	}
 
 }

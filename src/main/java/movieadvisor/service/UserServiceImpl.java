@@ -1,6 +1,7 @@
 package movieadvisor.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import movieadvisor.model.Friend;
@@ -58,6 +59,18 @@ public class UserServiceImpl implements UserService{
 			if (u.getUserId().equals(user.getUserId())) {
 				users.remove(u);
 				return users;
+			}
+		}
+		return users;
+	}
+	@Transactional
+	public Set<User> searchUsers(String query, Integer page, User loginUser) {
+		Set<User> users = userRepository.searchUsers(query);
+		if (loginUser != null) {
+			for (User user: users) {
+				if (loginUser.isFriends(user)) {
+					user.setIsFriendWithLogin(true);
+				}
 			}
 		}
 		return users;

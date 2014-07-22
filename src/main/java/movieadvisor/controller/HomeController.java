@@ -2,6 +2,7 @@ package movieadvisor.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,21 +11,26 @@ import movieadvisor.model.PageMovie;
 import movieadvisor.model.User;
 import movieadvisor.service.MovieService;
 /*import movieadvisor.service.WatchlistService;*/
+import movieadvisor.service.UserService;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"loginUser", "greeting", "page", "newUser"})
+@SessionAttributes({"loginUser", "page", "newUser"})
 public class HomeController {
 	
 	@Autowired
 	private MovieService movieService;
+	@Autowired
+	private UserService userService;
 	/*@Autowired
 	private WatchlistService watchlistService;*/
 	
@@ -38,25 +44,23 @@ public class HomeController {
 		model.addAttribute("newUser", newUser);
 		
 		User loginUser = (User)session.getAttribute("loginUser");
+		System.out.println("login user: " + loginUser);
 		if (loginUser != null) {
 			return "forward:/mainlogged";
 		}
-		else {
-			session.setAttribute("greeting", "Welcome guest");
-			System.out.println(session.getAttribute("greeting"));
-			model.addAttribute("greeting", "Welcome guest");
+		else {	
+		
+			Integer page = (Integer) session.getAttribute("page");
+			
+			if (page == null) page = 0;
+			System.out.println("page = " + page);
+			//Get first 4 movies
+			List<Movie> topRated = movieService.getTopRated(page, from, to);
+			
+			model.addAttribute("topRated", topRated);
+			//model.addAttribute("topRated", movieService.getTopRated(page));
+			model.addAttribute("newMovies", movieService.getNewMovies(page, from, to));
 		}
-		Integer page = (Integer) session.getAttribute("page");
-		
-		if (page == null) page = 0;
-		System.out.println("page = " + page);
-		//Get first 4 movies
-		List<Movie> topRated = movieService.getTopRated(page, from, to);
-		
-		model.addAttribute("topRated", topRated);
-		//model.addAttribute("topRated", movieService.getTopRated(page));
-		model.addAttribute("newMovies", movieService.getNewMovies(page, from, to));
-		
 		return "main";
 	}
 	
@@ -67,10 +71,6 @@ public class HomeController {
 		Integer to = 3;
 		
 		User loginUser = (User)session.getAttribute("loginUser");
-		String helloToUser = "Welcome back, " + loginUser.getUsername();
-		session.setAttribute("greeting", helloToUser);
-		System.out.println(session.getAttribute("greeting"));
-		model.addAttribute("greeting", helloToUser);
 		model.addAttribute("loginUser", loginUser);
 		
 		//Map<String, Object> recommendations = movieService.getRecommendations(loginUser.getUserId(), 1);
@@ -95,6 +95,38 @@ public class HomeController {
 		
 		
 		return "mainLoggedUser";
+	}
+	
+	@RequestMapping(value = "search", params = {"page"}, method=RequestMethod.POST)
+	public String search(@RequestParam("query") String query, @RequestParam("page") Integer page , Model model, HttpSession session) {
+		User loginUser = (User)session.getAttribute("loginUser");
+		PageMovie movies;
+		Set<User> users;
+		if (page == null) {
+			movies = movieService.searchMovies(query, loginUser, 1);
+			users = userService.searchUsers(query, 1, loginUser);
+		}
+		else {
+			movies = movieService.searchMovies(query, loginUser, page);
+			users = userService.searchUsers(query, page, loginUser);
+		}
+		model.addAttribute("movies", movies.getMovies());
+		model.addAttribute("noOfPages", movies.getNumberOfPages());
+		model.addAttribute("currentPage", page);
+		
+		
+		model.addAttribute("users", users);
+		return "searchResults";
+	}
+	@RequestMapping(value = "logout", method=RequestMethod.GET)
+	public String logout(HttpSession session) {
+		/*User loginUser = (User)session.getAttribute("loginUser");
+		loginUser = null;*/
+		session.removeAttribute("loginUser");
+		//session.invalidate();
+		//session.setAttribute("loginUser", null);
+		System.out.println("login user logout: " + (User)session.getAttribute("loginUser"));
+		return "redirect:/main";
 	}
 	
 	@RequestMapping(value = "/loadmorenewmovies")

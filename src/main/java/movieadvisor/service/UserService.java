@@ -1,5 +1,6 @@
 package movieadvisor.service;
 
+import java.util.List;
 import java.util.Set;
 
 import movieadvisor.model.Friend;
@@ -11,4 +12,5 @@ public interface UserService {
 	User validateUserLogin(User user);
 	Set<User> formUsers(Set<Friend> friendsSet);
 	Set<User> getAllUsers(User user);
+	Set<User> searchUsers(String query, Integer page, User loginUser);
 }
