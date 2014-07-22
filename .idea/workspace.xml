@@ -1,39 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc33b185-b73c-4f5e-8f8e-fac9cda9a00e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/controller/FriendController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/searchResults.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/userItem.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/FriendRepository.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/FriendRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/FriendRepositoryImpl.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/FriendRepositoryImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/service/FriendService.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/service/FriendService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/service/FriendServiceimpl.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/service/FriendServiceimpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/controller/HomeController.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/controller/HomeController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/service/MovieService.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/service/MovieService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/service/MovieServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/service/MovieServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/recommender/RecommenderEngine.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/recommender/RecommenderEngine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/helper/Scripts.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/helper/Scripts.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/model/User.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/model/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/controller/UserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/UserRepository.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/UserRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/UserRepositoryImpl.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/repository/UserRepositoryImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/service/UserService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/movieadvisor/service/UserServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/movieadvisor/service/UserServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/resources/js/ajax.js" afterPath="$PROJECT_DIR$/src/main/webapp/resources/js/ajax.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/footer.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/footer.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/header.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/header.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/jpaContext.xml" afterPath="$PROJECT_DIR$/src/main/resources/jpaContext.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/loginForm.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/loginForm.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.component" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.component" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/recommended.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/recommended.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/resources/js/script.js" afterPath="$PROJECT_DIR$/src/main/webapp/resources/js/script.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/signupForm.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/signupForm.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/config/tiles.xml" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/config/tiles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/watchlistItem.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/watchlistItem.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/.idea/workspace.xml" afterPath="$PROJECT_DIR$/src/main/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="fc33b185-b73c-4f5e-8f8e-fac9cda9a00e" name="Default" comment="" />
     <ignored path="movieadvisor.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
