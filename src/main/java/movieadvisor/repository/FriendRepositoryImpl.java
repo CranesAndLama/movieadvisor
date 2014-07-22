@@ -35,4 +35,9 @@ public class FriendRepositoryImpl implements FriendRepository{
 		em.persist(friend);
 		em.flush();
 	}
+
+	public void removeFriend(Friend friendDb) {
+		em.remove(friendDb);
+		em.flush();
+	}
 }

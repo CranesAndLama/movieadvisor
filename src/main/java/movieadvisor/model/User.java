@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -17,11 +18,23 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 @Entity
+@NamedNativeQuery(name=User.SEARCH_USERS, query="SELECT * "
+										+ "FROM User user "
+										+ "WHERE MATCH(user.fullName, user.email, user.username) "
+										+ "AGAINST(:query IN BOOLEAN MODE)", resultClass = User.class)
 @NamedQueries({
 	@NamedQuery(name=User.GET_USER_BY_USERNAME, query="Select user1 from User user1 where user1.username = :username"),
 	@NamedQuery(name=User.GET_USER_BY_EMAIL, query="Select user1 from User user1 where user1.email = :email"),
-	@NamedQuery(name=User.GET_ALL_USERS, query="Select user1 from User user1")
+	@NamedQuery(name=User.GET_ALL_USERS, query="Select user1 from User user1"),
+	
 })
 public class User {
 	private static final String EMAIL_PATTERN = 
@@ -48,7 +61,7 @@ public class User {
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<Movie> ratedMovies = new ArrayList<Movie>(0);
 	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private Set<Friend> friends = new HashSet<Friend>(0);
 	
 	
@@ -56,12 +69,13 @@ public class User {
 	private String country;
 	private Date birthDate;*/
 	
-	
-	
+	@Transient
+	private boolean isFriendWithLogin;
 	
 	public static final String GET_USER_BY_USERNAME = "getUserByUsername";
 	public static final String GET_USER_BY_EMAIL = "getUserByEmail";
 	public static final String GET_ALL_USERS = "getAllUsers";
+	public static final String SEARCH_USERS = "searchUsers";
 	
 	public Long getUserId() {
 		return userId;
@@ -112,6 +126,28 @@ public class User {
 	}
 	public void setFriends(Set<Friend> friends) {
 		this.friends = friends;
+	}
+	public boolean getIsFriendWithLogin() {
+		return isFriendWithLogin;
+	}
+	public void setIsFriendWithLogin(boolean isFriendWithLogin) {
+		this.isFriendWithLogin = isFriendWithLogin;
+	}
+	@Transactional
+	public boolean isFriends(User friend) {
+		
+		//Hibernate.initialize(this.getFriends());
+		
+		Set<Friend> friends= this.getFriends();
+		if (friends == null) return false;
+		for (Friend fr: friends) {
+			if (fr.getFriendId() == friend.getUserId()) {
+				System.out.println("User:"  + this.getUsername() + "is friend with: " + friend.getUsername());
+				System.out.println("FriendId:"  + fr.getFriendId() + "user friend id " + friend.getUserId());
+				return true;
+			}
+		}
+		return false;
 	}
 /*	public List<RecentlyViewedMovie> getRecentlyViewed() {
 		return recentlyViewed;

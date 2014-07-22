@@ -1,13 +1,9 @@
 package movieadvisor.helper;
 
 import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.TmdbMovies;
-import info.movito.themoviedbapi.model.Artwork;
-import info.movito.themoviedbapi.model.Credits;
+import info.movito.themoviedbapi.TmdbSearch;
 import info.movito.themoviedbapi.model.MovieDb;
-import info.movito.themoviedbapi.model.MovieImages;
-import info.movito.themoviedbapi.model.people.PersonCast;
-import info.movito.themoviedbapi.model.people.PersonCrew;
+import info.movito.themoviedbapi.model.core.MovieResults;
 
 import java.util.List;
 import java.util.Random;
@@ -39,7 +35,7 @@ public class Scripts {
 		   //get current date time with Date()
 		Date date = new Date();
 		System.out.println(dateFormat.format(date));*/
-		TmdbApi tmdbApi = new TmdbApi(API_KEY); 
+		/*TmdbApi tmdbApi = new TmdbApi(API_KEY); 
 		TmdbMovies movies = tmdbApi.getMovies();
 		MovieDb movie = movies.getMovie(240, "en");
 		Credits credits = movies.getCredits(240);
@@ -59,7 +55,7 @@ public class Scripts {
 			System.out.println(personCrew.getJob());
 			//System.out.println(personCrew);
 			System.out.println(personCrew.getName());
-		}
+		}*/
 		
 		/*MovieImages images = movies.getImages(240, "en");
 		System.out.println(images.getId());
@@ -97,5 +93,13 @@ public class Scripts {
 		}
 		System.out.println(resultList.size());
 	//}
-*/	}
+	 */
+	 	TmdbApi tmdbApi = new TmdbApi(API_KEY);
+	 	TmdbSearch search = tmdbApi.getSearch();
+	 	MovieResults results = search.searchMovie("godfather", 0, null, true, 1);
+	 	List<MovieDb> movies= results.getResults();
+	 	for (MovieDb movie: movies) {
+	 		System.out.println(movie.getTitle());
+	 	}
+	}
 }

@@ -89,3 +89,41 @@ $(document).ready(function() {
         e.preventDefault();
 	});
 });
+
+$(document).ready(function() {
+	$('.friend_btn').click(function(e){
+		if($(this).hasClass('remove_friend')){
+			var watchlistResponce = $(this);
+			console.log('0: ', watchlistResponce.html());
+			var url = $(this).data("removeurl");
+			console.log('1: ', url);
+            console.log('remove friend');
+				$.ajax({
+		               url:url,
+		               type: "GET"
+		       }).done (function(responce) {
+		               watchlistResponce.removeClass('remove_friend');
+		               watchlistResponce.addClass('add_friend');
+		       }).fail (function(err) {
+		              console.error(err);
+		      });
+		}
+		else {
+			var watchlistResponce = $(this);
+			console.log('0: ', watchlistResponce.html());
+			var url = $(this).data("addurl");
+			console.log('1: ', url);
+            console.log('add friend');
+			$.ajax({
+				url:url,	
+				type: "GET"
+		    }).done (function(responce) {
+		    	watchlistResponce.removeClass('add_friend');
+		    	watchlistResponce.addClass('remove_friend');
+		    }).fail (function(err) {
+		    	console.error(err);
+		    });
+		}
+        e.preventDefault();
+	});
+});

@@ -55,5 +55,12 @@ public class UserRepositoryImpl implements UserRepository{
 		Set<User> users = new HashSet<User>(listUsers);
 		return users;
 	}
+	public Set<User> searchUsers(String query) {
+		TypedQuery<User> typedQuery = em.createNamedQuery(User.SEARCH_USERS, User.class);
+		typedQuery.setParameter("query", query);
+		List<User> listUsers = typedQuery.getResultList();
+		Set<User> users = new HashSet<User>(listUsers);
+		return users;
+	}
 
 }

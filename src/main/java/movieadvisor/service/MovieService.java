@@ -42,5 +42,7 @@ public interface MovieService {
 
 	List<Movie> getNewMoviesFromDb(User loginUser);
 
+	PageMovie searchMovies(String query, User loginUser, Integer page);
+
 	
 }

@@ -10,4 +10,5 @@ public interface UserRepository {
 	public User getUserByEmail(String email);
 	public User getUserById(Long friendId);
 	public Set<User> getAllUsers();
+	public Set<User> searchUsers(String query);
 }
