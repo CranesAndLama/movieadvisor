@@ -12,14 +12,7 @@
             <div>
                 <div class="content-style-form content-style-form-1">
                     <span class="icon-close"></span>
-                    <!-- 
-                    <form>
-                        <label>Email</label><input type="text">
-                        <label>Username</label><input type="text">
-                        <label>Password</label><input type="password">
-                        <div class="btn1" onclick="location.href='/movieadvisor/user/signup'">SignUp</div>
-                    </form>
-                     -->
+                    
 		            <%@ include file="signupForm.jsp" %>
                 </div>
             </div>
@@ -32,14 +25,8 @@
             <div>
                 <div class="content-style-form content-style-form-1">
                     <span class="icon-close"></span>
-                    <!--<h2>Login</h2>
-                    <form>
-                        <label>Email</label><input type="text">
-                        <label>Password</label><input type="password">
-                        <div class="btn1">SignIn</div>
-                    </form>
-                    -->
-			        <%@ include file="loginForm.jsp" %>
+                    
+			        <%@ include file="login.jsp" %>
                 </div>
             </div>
         </div>

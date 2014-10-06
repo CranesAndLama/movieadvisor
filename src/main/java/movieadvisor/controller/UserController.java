@@ -34,9 +34,26 @@ public class UserController {
 	@Autowired
 	private MovieService movieService;
 	
-	
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String springSecurityLoginForm(Model model) {
+		//model.addAttribute("user", new User());
+		System.out.println("SPRING SECURITY");
+		return "login";
+	}
+	@RequestMapping(value = "logout", method=RequestMethod.GET)
+	public String logout(HttpSession session) {
+		/*User loginUser = (User)session.getAttribute("loginUser");
+		loginUser = null;*/
+		session.removeAttribute("loginUser");
+		//session.invalidate();
+		//session.setAttribute("loginUser", null);
+		System.out.println("login user logout: " + (User)session.getAttribute("loginUser"));
+		return "redirect:/main";
+	}
+
 	@RequestMapping(value = "user/login", method = RequestMethod.GET)
 	public String showUserLoginForm(Model model) {
+		System.out.println("USER LOGIN CONTROLLER");
 		model.addAttribute("user", new User());
 		return "loginForm";
 	}

@@ -37,6 +37,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 	
 })
 public class User {
+	
 	private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -51,7 +52,7 @@ public class User {
 	@Size(min=3, max=50, message="Your full name must be between 3 and 50 characters long.")
 	private String fullName;
 	
-	@Size(min=6, max=20, message="The password must be at least 6 characters long.")
+	@Size(min=6, message="The password must be at least 6 characters long.")
 	private String password;
 	
 	@Pattern(regexp=EMAIL_PATTERN, message="Invalid email address.")

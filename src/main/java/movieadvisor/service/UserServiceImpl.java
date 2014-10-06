@@ -22,6 +22,10 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public User saveUser(User newUser) {
 		//users.add(newUser);
+		String passwordString = newUser.getPassword() + "{" + newUser.getEmail() + "}";
+		System.out.println(passwordString);
+		String hashedPassword = org.apache.commons.codec.digest.DigestUtils.sha256Hex(passwordString);
+		newUser.setPassword(hashedPassword);
 		return userRepository.saveUser(newUser);
 		
 	}
@@ -34,10 +38,14 @@ public class UserServiceImpl implements UserService{
 		return userRepository.getUserByUsername(username);
 	}
 
+	public User getUser(String email) {
+		User userFromDB = userRepository.getUserByEmail(email);
+		return userFromDB;
+	}
 	public User validateUserLogin(User user) {
-		User userFromBD = userRepository.getUserByEmail(user.getEmail());
-		if ((userFromBD != null) && (userFromBD.getPassword()).equals(user.getPassword())) 
-			return userFromBD;
+		User userFromDB = userRepository.getUserByEmail(user.getEmail());
+		if ((userFromDB != null) && (userFromDB.getPassword()).equals(user.getPassword())) 
+			return userFromDB;
 		else
 			return null;
 	}

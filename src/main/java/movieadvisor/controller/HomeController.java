@@ -15,6 +15,8 @@ import movieadvisor.service.UserService;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,12 @@ public class HomeController {
 		User newUser = new User();
 		session.setAttribute("newUser", newUser);
 		model.addAttribute("newUser", newUser);
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			UserDetails user = (UserDetails) principal;
+			System.out.println("User Details: " + user.getUsername() + " " + user.getPassword());
+		}
 		
 		User loginUser = (User)session.getAttribute("loginUser");
 		System.out.println("login user: " + loginUser);
@@ -117,16 +125,6 @@ public class HomeController {
 		
 		model.addAttribute("users", users);
 		return "searchResults";
-	}
-	@RequestMapping(value = "logout", method=RequestMethod.GET)
-	public String logout(HttpSession session) {
-		/*User loginUser = (User)session.getAttribute("loginUser");
-		loginUser = null;*/
-		session.removeAttribute("loginUser");
-		//session.invalidate();
-		//session.setAttribute("loginUser", null);
-		System.out.println("login user logout: " + (User)session.getAttribute("loginUser"));
-		return "redirect:/main";
 	}
 	
 	@RequestMapping(value = "/loadmorenewmovies")
