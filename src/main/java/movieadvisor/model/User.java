@@ -36,6 +36,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 	@NamedQuery(name=User.GET_ALL_USERS, query="Select user1 from User user1"),
 	
 })
+
+//User class
 public class User {
 	
 	private static final String EMAIL_PATTERN = 
