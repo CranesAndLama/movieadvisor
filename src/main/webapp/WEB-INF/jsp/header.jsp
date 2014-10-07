@@ -2,7 +2,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
-<!doctype html>
+
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/movieadvisor/resources/css/sprite.css">
     <link rel="stylesheet" type="text/css" href="/movieadvisor/resources/fonts/fonts.css">
     <link rel="stylesheet" type="text/css" href="/movieadvisor/resources/style.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
 	<script src="/movieadvisor/resources/js/script.js" type="text/javascript"></script>
 	<script src="/movieadvisor/resources/js/ajax.js" type="text/javascript"></script>
 

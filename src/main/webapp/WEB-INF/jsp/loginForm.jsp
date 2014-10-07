@@ -1,3 +1,4 @@
+ 					<!-- 
  					<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 					<sf:form method="POST" modelAttribute="newUser" action="/movieadvisor/user/login">
 						<label for="user_email">Email Address:</label>
@@ -20,5 +21,5 @@
                             <a class="soc_login_item gp" href=""></a>
                         </div>
                     </div>
-                    
+                     -->
                     

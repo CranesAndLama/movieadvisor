@@ -10,6 +10,7 @@
 		
 
 <security:http use-expressions="true">
+    
  	<security:form-login login-page="/login" 
  		default-target-url="/main"
  		authentication-failure-url="/login"/>
@@ -24,7 +25,9 @@
  	<security:intercept-url pattern="/allUsers" access="permitAll"/>
  	<security:intercept-url pattern="/recommendations" access="fullyAuthenticated"/>
  	<security:intercept-url pattern="/search" access="permitAll"/>
+ 	 
  	<security:intercept-url pattern="/**" access="denyAll"/>
+ 	
  	<security:logout logout-url="/logout" logout-success-url="/main"/>
    
 </security:http> 
